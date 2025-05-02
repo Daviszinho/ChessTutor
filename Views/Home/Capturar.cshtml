@@ -1,0 +1,85 @@
+@{
+    ViewData["Title"] = "Capturar las piezas adversarias";
+}
+<h1>@ViewData["Title"]</h1>
+
+
+<h2>Reglas generales para &quot;Comer&quot;</h2>
+<FONT SIZE=5>L</font>as piezas capturan las piezas adversarias en relaci&oacute;n con su propio movimiento (excepto el pe&oacute;n), es decir,
+ataca las casillas donde pueda moverse, y puede capturar cualquier pieza adversaria que se encuentre all&iacute;.
+En el momento en que se capture a una pieza, esta debe ser retirada inmediatamente del tablero mientras que la pieza
+ganadora debe ocupar la casilla por la pieza capturada, es decir, no puede seguir el movimiento
+despu&eacute;s de capturar. Capturar piezas <EM>NO<FONT SIZE="4"></FONT></EM> es obligatorio. Si una casilla est&aacute; atacada por el adversario,
+cualquier pieza puede moverse all&iacute;, con el l&oacute;gico peligro de ser capturadas, s&oacute;lo el rey no puede nunca
+estar o colocarse bajo ataque.
+<br>Los c&iacute;rculos indican las piezas que pueden ser capturadas y las flechas indican las posibilidades de movimiento.
+El color de las flechas y c&iacute;rculos indican por cu&aacute;les piezas se realiza el movimiento.
+
+<h3>El rey</h3>
+<center><IMG SRC="~/img/comerey.gif" ALT="�C&oacute;mo captura el rey?" border=1 width=323 height=323></center>
+<font size=5>E</font>n el gr&aacute;fico anterior se aprecia las posibilidades del rey de capturar piezas adversarias
+y de moverse. El rey negro ubicado en el centro del tablero puede capturar el pe&oacute;n blanco y la torre blanca, pero,
+no puede desplazarse donde se ubica el alfil negro (pues de su propio bando), adem&aacute;s, no puede desplazarse a su
+derecha, ni hacia abajo, porque la torre blanca ataca dichos espacios (el rey no puede desplazarse a casillas atacas por
+piezas adversarias). El rey blanco ubicado al borde del tablero s&oacute;lo puede capturar el caballo negro y solamente
+puede moverse donde se se&ntilde;alan los c&iacute;rculos azules, pero, donde se&ntilde;ala las equis azules no se
+puede mover, pues, est&aacute;n vulneradas por el alfil y el caballo adversarios.
+   <center>
+        <div id='ejemploCapRey' style='width: 400px'>
+    </center>
+
+<h3>La Dama</h3>
+<font size=5>E</font>n la siguiente imagen se aprecia que la dama blanca puede capturar el caballo negro, adem&aacute;s, de los otros quince
+movimientos posibles. Aunque algunas casillas posibles del movimiento de la dama blanca est&aacute;n vulneradas por la dama
+adversaria no se restringe el movimiento (al rey si se le restringe), sucede de la misma manera para la dama negra.
+La dama negra ataca a la torre blanca y al caballo blanco, puede realizar sin restricciones los movimientos que indican las flechas
+azules. La dama blanca, ni la dama negra pueden saltar sobre el caballo blanco.
+<center><IMG SRC="~/img/comerdama.gif" ALT="�C&oacute;mo captura la dama?" border=1 width=323 height=323></center>
+   <center>
+        <div id='ejemploCapDama' style='width: 400px'>
+    </center>
+
+<h3>La Torre</h3>
+<font size=5>S</font>e puede apreciar que la torre negra de abajo s&oacute;lo puede capturar el pe&oacute;n blanco,
+mientras que la torre negra de arriba, solamente puede capturar a la torre blanca, asimismo, la torre blanca puede capturar
+la torre negra que le est&aacute; atacando. Las torres pueden desplazarse como lo indican las flechas. Es decir, la torre blanca puede
+moverse en nueve casillas, m&aacute;s la posibilidad de tomar la torre negra adversaria. En el caso de la torre negra ubicada en la parte
+superior del tablero es capaz de realizar diez movimientos y la capacidad de tomar la torre blanca.
+<center><IMG SRC="~/img/comertorre.gif" ALT="�C&oacute;mo captura la torre?" border=1 width=323 height=323></center>
+   <center>
+        <div id='ejemploCapTorre' style='width: 400px'>
+    </center>
+
+<h3>El Alfil</h3>
+<font size=5>E</font>l alfil negro puede realizar nueve movimientos m&aacute;s la posibilidad de capturar
+el pe&oacute;n blanco. En cambio, el alfil blanco puede ganar la dama negra. El movimiento del alfil blanco en la gran diagonal
+est&aacute; impedido por la dama de su propio bando, es decir, no puede continuar su movimiento en la diagonal mayor.
+<center><IMG SRC="~/img/comeralfil.gif" ALT="�C&oacute;mo captura el alfil?" border=1 width=323 height=323></center>
+   <center>
+        <div id='ejemploCapAlfil' style='width: 400px'>
+    </center>
+
+<h3>El Caballo</h3>
+<font size=5>L</font>as equis (&quot;x&quot;) indican las posibilidades de movimiento de los caballos. Los caballos pueden
+saltar piezas adversarias o enemigas. En el gr&aacute;fico se identifica que el caballo negro puede realizar siete movimientos,
+adem&aacute;s de ganar el pe&oacute;n blanco. El caballo blanco puede capturar la torre negra (en la esquina) o la dama negra
+(en el centro) este &quot;ataque&quot; se denomina &quot;Doble del caballo&quot;, pues, se est&aacute;
+atacando dos piezas a la vez. Otras piezas pueden realizar ataques semejantes como el alfil o la torre. Esto proporciona
+ganancia segura de material. El caballo blanco puede realizar otros cuatro movimientos.
+<center><IMG SRC="~/img/comercaballo.gif" ALT="�C&oacute;mo captura el caballo?" border=1 width=323 height=323></center>
+   <center>
+        <div id='ejemploCapCaballo' style='width: 400px'>
+    </center>
+
+<h3>El Pe&oacute;n</h3>
+<font size=5>E</font>l pe&oacute;n es un caso particular, pues, solamente puede atacar las casillas diagonales al frente de &eacute;l,
+pero, s&oacute;lo un paso. En la imagen, el pe&oacute;n blanco como se encuentra en su casilla inicial podr&iacute;a moverse uno o dos
+pasos hacia adelante, pero, dichos movimientos se ven truncados por el alfil negro, a pesar de ser pieza enemiga, aun as&iacute;, NO PUEDE
+SER CAPTURADA. Dicho pe&oacute;n puede capturar al caballo negro solamente. El pe&oacute;n negro ubicado
+en la parte superior del tablero, puede ganar la reina blanca o podr&iacute;a realizar uno o dos pasos hacia adelante,
+pues est&aacute; en su posici&oacute;n original. Despu&eacute;s que el pe&oacute;n negro haya realizado su primer movimiento solo podr&aacute;
+comer (cuando tenga oportunidad) o avanzar un espacio a la vez cada jugada.
+<center><IMG SRC="~/img/comerpeon.gif" ALT="�C&oacute;mo captura el pe&oacute;n?" border=1 width=323 height=323></center>
+   <center>
+        <div id='ejemploCapPeon' style='width: 400px'>
+    </center>

@@ -1,0 +1,362 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ChessTutor</title>
+    <script type="importmap"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.2/chess.js" integrity="sha384-s3XgLpvmHyscVpijnseAmye819Ee3yaGa8NxstkJVyA6nuDFjt59u1QvuEl/mecz" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+    <script src="https://unpkg.com/@@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js" integrity="sha384-8Vi8VHwn3vjQ9eUHUxex3JSN/NFqUg3QbPyX8kWyb93+8AC/pPWTzj+nHtbC5bxD" crossorigin="anonymous"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <!--script src="~/lib/jquery/dist/jquery.min.js"></script-->
+    <!--script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script-->
+    
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <script src="~/js/chessboardjs/js/chessboard-1.0.0.js" asp-append-version="true"></script>
+    <link rel="stylesheet" href="https://unpkg.com/@@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css" integrity="sha384-q94+BZtLrkL1/ohfjR8c6L+A6qzNH9R2hBLwyoAfu3i/WCvQjzL2RQJ3uNHDISdU" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/TestAzureDevOps.styles.css" asp-append-version="true" />
+    <link rel='stylesheet' href='~/js/chessboardjs/css/chessboard-1.0.0.min.css' asp-append-version="true">
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ChessTutor</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home"
+                                asp-action="Index">Inicio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home"
+                                asp-action="Movimiento">Movimiento de las piezas</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home"
+                                asp-action="Capturar">Capturar piezas</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home"
+                                asp-action="Extraordinarios">Movimientos extraordinarios</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Ritmo">Ritmo de
+                                la partida</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home"
+                                asp-action="Nomeclatura">Nomeclatura</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home"
+                                asp-action="Aperturas">Aperturas</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home"
+                                asp-action="Ejercicios">Ejercicios</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home"
+                                asp-action="Historia">Historia</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home"
+                                asp-action="JugarStockfish">Jugar contra la computadora</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2025 - ChessTutor - Desarrollado por Davis Penaranda Zarate
+        </div>
+    </footer>
+    
+    <script type="module">
+
+        var board = null
+        var game = new Chess()
+        function isValidKingMove(source, target) {
+            // Calcula la diferencia en columnas (letras) y filas (números)
+            const fileDiff = Math.abs(source.charCodeAt(0) - target.charCodeAt(0));
+            const rankDiff = Math.abs(parseInt(source[1]) - parseInt(target[1]));
+            // Evitar movimientos nulos
+            if (fileDiff === 0 && rankDiff === 0) return false;
+            // El rey solo se mueve 1 casilla en cualquier dirección
+            return (fileDiff <= 1 && rankDiff <= 1);
+        }
+
+        function isValidRookMove(source, target) {
+            const fileDiff = Math.abs(source.charCodeAt(0) - target.charCodeAt(0)); // Diferencia de columnas
+            const rankDiff = Math.abs(parseInt(source[1]) - parseInt(target[1]));   // Diferencia de filas
+
+            // Movimiento válido si es en línea recta horizontal o vertical, y no es la misma casilla
+            return ((fileDiff === 0 || rankDiff === 0) && source !== target);
+        }
+
+        function isValidQueenMove(source, target) {
+            const fileDiff = Math.abs(source.charCodeAt(0) - target.charCodeAt(0));
+            const rankDiff = Math.abs(parseInt(source[1]) - parseInt(target[1]));
+
+            // La reina puede moverse en horizontal, vertical y diagonal
+            const isHorizontalOrVertical = fileDiff === 0 || rankDiff === 0;
+            const isDiagonal = fileDiff === rankDiff;
+
+            // No permitir que se quede en la misma casilla
+            const isSameSquare = source === target;
+
+            return (isHorizontalOrVertical || isDiagonal) && !isSameSquare;
+        }
+
+        function isValidBishopMove(source, target) {
+            const fileDiff = Math.abs(source.charCodeAt(0) - target.charCodeAt(0)); // Diferencia de columnas
+            const rankDiff = Math.abs(parseInt(source[1]) - parseInt(target[1]));   // Diferencia de filas
+
+            // Movimiento válido si es diagonal y no es la misma casilla
+            return (fileDiff === rankDiff && source !== target);
+        }
+
+        function isValidKnightMove(source, target) {
+            const fileDiff = Math.abs(source.charCodeAt(0) - target.charCodeAt(0)); // Diferencia de columnas
+            const rankDiff = Math.abs(parseInt(source[1]) - parseInt(target[1]));   // Diferencia de filas
+
+            // Movimiento válido del caballo en forma de "L"
+            return (fileDiff === 2 && rankDiff === 1) || (fileDiff === 1 && rankDiff === 2);
+        }
+
+        function isValidPawnMove(source, target, piece) {
+            const fileDiff = Math.abs(source.charCodeAt(0) - target.charCodeAt(0)); // Diferencia de columnas
+            const rankDiff = parseInt(target[1]) - parseInt(source[1]); // Diferencia de filas
+
+            // Movimiento del peón blanco hacia adelante (1 o 2 casillas en el primer movimiento)
+            if (piece === 'wP') {
+                // Movimiento inicial de 2 casillas o normal de 1 casilla
+                if (fileDiff === 0 && (rankDiff === 1 || (rankDiff === 2 && source[1] === '2'))) return true;
+                // Captura en diagonal
+                if (fileDiff === 1 && rankDiff === 1) return true;
+            }
+
+            // Movimiento del peón negro hacia adelante (1 o 2 casillas en el primer movimiento)
+            if (piece === 'bP') {
+                // Movimiento inicial de 2 casillas o normal de 1 casilla
+                if (fileDiff === 0 && (rankDiff === -1 || (rankDiff === -2 && source[1] === '7'))) return true;
+                // Captura en diagonal
+                if (fileDiff === 1 && rankDiff === -1) return true;
+            }
+
+            return false; // Movimiento inválido
+        }
+
+        function isCastlingMove(from, to, piece) {
+            if (piece !== "K" && piece !== "k") return false; // Solo el rey puede enrocar
+
+            const rank = from[1]; // Obtener la fila (1 para blancas, 8 para negras)
+
+            // Movimiento válido de enroque: el rey se mueve exactamente dos columnas
+            if (from[0] === "e" && (to === `g${rank}` || to === `c${rank}`)) {
+                return true;
+            }
+
+            return false;
+        }
+
+        function newSampleBoard(idboard, fen, whitePiece, blackPiece, validateFunction) {
+            document.getElementById(idboard).addEventListener('touchmove', (event) => {
+                event.preventDefault();
+            }, { passive: false });
+
+            return Chessboard(idboard, {
+
+                draggable: true,
+                position: fen,
+                onDrop: function (source, target, piece) {
+                    //removeGreySquares(idboard);
+                    // Solo permitimos mover reyes (identificados como "wK" o "bK")
+                    if (piece === whitePiece || piece === blackPiece) {
+                        if (validateFunction(source, target, piece)) {
+                            // Si el movimiento es válido, se acepta
+                            return true;
+                        } else {
+                            // Si no es válido, se revierte el movimiento
+                            return 'snapback';
+                        }
+                    }
+                    // Para cualquier otra pieza, siempre se revierte el movimiento
+                    return 'snapback';
+                }
+            });
+        }
+
+        if (document.getElementById('ejemplo1')) {
+            var board = Chessboard('ejemplo1', 'start');
+        } if (document.getElementById('ejemploMovRey')) {
+            newSampleBoard('ejemploMovRey', '8/8/8/3k4/8/8/8/3K4', "wK", "bK", isValidKingMove);
+        }
+        if (document.getElementById('ejemploMovDama')) {
+            newSampleBoard('ejemploMovDama', '8/8/8/8/4q3/8/8/Q7', "wQ", "bQ", isValidQueenMove);
+        }
+        if (document.getElementById('ejemploMovTorre')) {
+            newSampleBoard('ejemploMovTorre', '8/8/8/8/4r3/8/8/7R', "wR", "bR", isValidRookMove);
+        }
+        if (document.getElementById('ejemploMovAlfil')) {
+            newSampleBoard('ejemploMovAlfil', '8/8/8/3B4/8/8/8/b7', "wB", "bB", isValidBishopMove);
+        }
+        if (document.getElementById('ejemploMovCaballo')) {
+            newSampleBoard('ejemploMovCaballo', '7N/8/8/3N4/8/8/8/2n5', "wN", "bN", isValidKnightMove);
+        }
+        if (document.getElementById('ejemploMovPeon')) {
+            newSampleBoard('ejemploMovPeon', '8/8/p7/6n1/6P1/8/3P4/8', "wP", "bP", isValidPawnMove);
+        }
+        if (document.getElementById('ejemploCapRey')) {
+            newSampleBoard('ejemploCapRey', '8/8/2P5/3k4/2b1R3/8/8/3Kn3', "wK", "bK", isValidKingMove);
+        }
+        if (document.getElementById('ejemploCapDama')) {
+            newSampleBoard('ejemploCapDama', '8/3R4/4q3/8/8/Q2N4/1n6/8', "wQ", "bQ", isValidQueenMove);
+        }
+        if (document.getElementById('ejemploCapTorre')) {
+            newSampleBoard('ejemploCapTorre', '8/8/1R3r2/8/8/8/1P3r2/8', "wR", "bR", isValidRookMove);
+        }
+        if (document.getElementById('ejemploCapAlfil')) {
+            newSampleBoard('ejemploCapAlfil', '5q2/6B1/8/8/3Q4/5b2/6P1/8', "wB", "bB", isValidBishopMove);
+        }
+        if (document.getElementById('ejemploCapCaballo')) {
+            newSampleBoard('ejemploCapCaballo', '7r/8/6N1/8/5q2/2n5/PPP5/8', "wN", "bN", isValidKnightMove);
+        }
+        if (document.getElementById('ejemploCapPeon')) {
+            newSampleBoard('ejemploCapPeon', '8/5p2/6Q1/8/8/1bn5/1P6/8', "wP", "bP", isValidPawnMove);
+        }
+
+        if (document.getElementById('stockfishBoard')) {
+            document.getElementById('stockfishBoard').addEventListener('touchmove', (event) => {
+                event.preventDefault();
+            }, { passive: false });
+
+            var board = null;
+            var game = new Chess();
+
+            function onDragStart(source, piece, position, orientation) {
+                // do not pick up pieces if the game is over
+                if (game.game_over()) return false
+                console.info("orientation: " + orientation);
+                if (orientation === 'white') {
+                    // Prevent black pieces from being picked up
+                    if (piece.search(/^b/) !== -1) return false;
+                } else {
+                    // Prevent white pieces from being picked up
+                    if (piece.search(/^w/) !== -1) return false;
+                }
+
+            }
+
+            function makeStockfishMove() {
+                var possibleMoves = game.moves()
+
+                // game over
+                if (possibleMoves.length === 0) return;
+
+                $.ajax({
+                    url: "https://stockfish.online/api/s/v2.php",
+                    type: "GET",
+                    data: { fen: game.fen(), depth: 10 },
+                    dataType: "json",
+                    success: function (response) {
+                        var moving = JSON.stringify(response.bestmove, null, 2).split(' ')[1];
+                        console.info("response move: " + moving);
+                        game.move(moving, { sloppy: true })
+                        board.position(game.fen());
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error en la consulta:", error);
+                    }
+                });
+            }
+
+            function onDrop(source, target) {
+                // see if the move is legal
+                var move = game.move({
+                    from: source,
+                    to: target,
+                    promotion: 'q' // NOTE: always promote to a queen for example simplicity
+                })
+
+                // illegal move
+                if (move === null) return 'snapback'
+
+                makeStockfishMove();
+            }
+
+            // update the board position after the piece snap
+            // for castling, en passant, pawn promotion
+            function onSnapEnd() {
+                board.position(game.fen())
+            }
+
+            var config = {
+                draggable: true,
+                position: 'start',
+                onDragStart: onDragStart,
+                onDrop: onDrop,
+                onSnapEnd: onSnapEnd,
+                orientation: 'white'
+            }
+            board = Chessboard('stockfishBoard', config);
+
+            $('#newGameWhite').on('click', function () {
+
+                var config = {
+                    draggable: true,
+                    position: 'start',
+                    onDragStart: onDragStart,
+                    onDrop: onDrop,
+                    onSnapEnd: onSnapEnd,
+                    orientation: 'white'
+
+                }
+                game = new Chess();
+                board = Chessboard('stockfishBoard', config);
+            })
+
+            $('#newGameBlack').on('click', function () {
+                var config = {
+                    draggable: true,
+                    position: 'start',
+                    onDragStart: onDragStart,
+                    onDrop: onDrop,
+                    onSnapEnd: onSnapEnd,
+                    orientation: 'black'
+                }
+                board = Chessboard('stockfishBoard', config);
+                game = new Chess();
+                makeStockfishMove();
+
+            })
+        }
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+
+</html>

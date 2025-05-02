@@ -1,0 +1,129 @@
+@{
+    ViewData["Title"] = "Las piezas del ajedrez";
+}
+
+<div class="text-center">
+    
+    <h2>En el principio...</h2>
+    <FONT SIZE=5>E</FONT>l ajedrez ocupa seis piezas, cada una de ellas seg&uacute;n
+    las reglas se mueve de una manera particular. Cada uno de los bandos (negras
+    y blancas) posee la siguiente cantidad de piezas al inicio de una partida:
+    <center>
+    <table border>
+        <tr>
+            <th>
+                <center> Pieza </center>
+            </th>
+            <th>
+                <center>Cantidad</center>
+            </th>
+            <th>
+                <center>S&iacute;mbolo de<br>blancas y negras</center>
+            </th>
+        </tr>
+        <tr>
+            <td>
+                <center><I>Rey</I></center>
+            </td>
+            <td>
+                <center>1</center>
+            </td>
+            <td>
+                <center><img src='~/js/chessboardjs/img/chesspieces/wikipedia/wK.png' alt="S&iacute;mbolo del rey blanco" border=1 width=40 height=40>
+                    &nbsp;<img src='~/js/chessboardjs/img/chesspieces/wikipedia/bK.png' alt="S&iacute;mbolo del rey negro" border=1 width=40 height=40></center>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <I>
+                    <center>Dama</center>
+                </I>
+            </td>
+            <td>
+                <center>1</center>
+            </td>
+            <td>
+                <center><img src='~/js/chessboardjs/img/chesspieces/wikipedia/wq.png' alt="S&iacute;mbolo de la dama blanca" border=1 width=40 height=40>
+                    &nbsp;<img src='~/js/chessboardjs/img/chesspieces/wikipedia/bQ.png'  alt="S&iacute;mbolo de la dama negra" border=1 width=40 height=40>
+                </center>
+            </td>
+        </tr>
+        <tr>
+            <td><I>
+                    <center>Torre</center>
+                </I>
+            </td>
+            <td>
+                <center>2</center>
+            </td>
+            <td>
+                <center><img src='~/js/chessboardjs/img/chesspieces/wikipedia/wR.png' alt="S&iacute;mbolo de la torre blanca" border=1 width=40 height=40>
+                    &nbsp;<img src='~/js/chessboardjs/img/chesspieces/wikipedia/bR.png' alt="S&iacute;mbolo de la torre negra" border=1 width=40 height=40>
+                </center>
+            </td>
+        </tr>
+        <tr>
+            <td><I>
+                    <center>Alfil</center>
+                </I>
+            </td>
+            <td>
+                <center>2</center>
+            </td>
+            <td>
+                <center><img src='~/js/chessboardjs/img/chesspieces/wikipedia/wB.png' alt="S&iacute;mbolo del alfil negro" border=1 width=40 height=40>
+                    &nbsp;<img src='~/js/chessboardjs/img/chesspieces/wikipedia/bB.png'  alt="S&iacute;mbolo del alfil negro" border=1 width=40 height=40>
+                </center>
+            </td>
+        </tr>
+        <tr>
+            <td><I>
+                    <center>Caballo</center>
+                </I>
+            </td>
+            <td>
+                <center>2</center>
+            </td>
+            <td>
+                <center><img src='~/js/chessboardjs/img/chesspieces/wikipedia/wN.png' alt="S&iacute;mbolo del caballo blanco" border=1 width=40 height=40>
+                    &nbsp;<img src='~/js/chessboardjs/img/chesspieces/wikipedia/bN.png' alt="S&iacute;mbolo del caballo negro" border=1 width=40 height=40>
+                </center>
+            </td>
+        </tr>
+        <tr>
+            <td><I>
+                    <center>Pe&oacute;n</center>
+                </I>
+            </td>
+            <td>
+                <center>8</center>
+            </td>
+            <td>
+                <center><img src='~/js/chessboardjs/img/chesspieces/wikipedia/wP.png' alt="S&iacute;mbolo del pe&oacute;n negro" border=1 width=40 height=40>
+                    &nbsp;
+                    <img src='~/js/chessboardjs/img/chesspieces/wikipedia/bP.png' alt="S&iacute;mbolo del pe&oacute; negro" border=1 width=40 height=40>
+                </center>
+            </td>
+        </tr>
+    </table>
+    </center>
+
+    * Es decir sobre un tablero se encuentran 32 piezas, 16 para cada bando,
+    distribuidas equitativamente como lo ilustra la anterior tabla.
+    <br>
+    Las piezas al inicio de una partida deben colocarse de la siguiente
+    manera:
+    <center>
+        <div id='ejemplo1' style='width: 400px'>
+    </center>
+    <u>Nota importante:</u> Es importante aclarar que las piezas negras est&aacute;n colocadas
+    arriba y las blancas abajo, de tal manera que en los gr&aacute;ficos, los avances
+    del blanco van hacia arriba y los avances del negro hacia abajo. Adem&aacute;s,
+    el tablero se coloca de tal manera que hay una casilla blanca en la esquina inferior
+    derecha. <br>
+    <br>Suele confundirse las posiciones entre el rey y la reina. Se soluciona con la siguiente regla:
+    &quot;Reina blanca en casilla blanca, reina negra en casilla negra, las daman mandan.&quot;
+
+
+</div>
+
