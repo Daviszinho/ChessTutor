@@ -28,30 +28,34 @@
 </style>
 
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <h1 class="display-3 fw-bold">ChessTutor</h1>
-        <p class="lead">Aprende ajedrez desde lo básico hasta lo avanzado</p>
-        <a asp-action="Inicio" class="btn btn-warning btn-lg mt-4">Comienza a aprender</a>
-    </section>
+<!-- Hero Section -->
+<section class="hero">
+    <h1 class="display-3 fw-bold">ChessTutor</h1>
+    <p class="lead">Aprende ajedrez desde lo básico hasta lo avanzado</p>
+    <a asp-action="Inicio" class="btn btn-warning btn-lg mt-4">Comienza a aprender</a>
+</section>
 
-    <!-- Secciones -->
-    <section class="container py-5" id="learn">
-        <div class="row text-center">
-            <div class="col-md-4">
+<!-- Secciones -->
+<section class="container py-5" id="learn">
+    <div class="row text-center">
+        <div class="col-md-4">
+            <a asp-action="Inicio" class="text-decoration-none text-reset">
                 <div class="section-icon mb-3">♙</div>
                 <h4>Aprende lo básico</h4>
                 <p>Entiende cómo se mueve cada pieza y las reglas fundamentales.</p>
-            </div>
-            <div class="col-md-4">
-                <div class="section-icon mb-3">♘</div>
-                <h4>Tácticas y estrategias</h4>
-                <p>Mejora tu juego con aperturas, trampas y visión táctica.</p>
-            </div>
-            <div class="col-md-4">
+            </a>
+        </div>
+        <div class="col-md-4">
+            <div class="section-icon mb-3">♘</div>
+            <h4>Tácticas y estrategias</h4>
+            <p>Mejora tu juego con aperturas, trampas y visión táctica.</p>
+        </div>
+        <div class="col-md-4">
+            <a asp-action="JugarStockfish" class="text-decoration-none text-reset">
                 <div class="section-icon mb-3">🤖</div>
                 <h4>Juega contra la IA</h4>
                 <p>Practica contra una inteligencia artificial que se adapta a tu nivel.</p>
-            </div>
+            </a>
         </div>
-    </section>
+    </div>
+</section>
