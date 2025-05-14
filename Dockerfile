@@ -7,8 +7,6 @@ RUN dotnet restore
 
 # Copy everything else and build
 COPY . ./
-#RUN dotnet publish -c Release -o out
-#RUN dotnet publish ChessTutorWeb.csproj -c Release -o /app/publish
 RUN dotnet publish ChessTutorWeb.csproj -c Release -o out
 
 
