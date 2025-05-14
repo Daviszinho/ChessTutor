@@ -1,4 +1,4 @@
-namespace TestAzureDevOps.Models;
+namespace ChessTutorWeb.Models;
 
 public class ErrorViewModel
 {

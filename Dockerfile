@@ -7,7 +7,10 @@ RUN dotnet restore
 
 # Copy everything else and build
 COPY . ./
-RUN dotnet publish -c Release -o out
+#RUN dotnet publish -c Release -o out
+#RUN dotnet publish ChessTutorWeb.csproj -c Release -o /app/publish
+RUN dotnet publish ChessTutorWeb.csproj -c Release -o out
+
 
 # Install Node.js and npm
 RUN apt-get update && \
@@ -22,6 +25,8 @@ WORKDIR /app
 COPY --from=build /app/out .
 COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/wwwroot ./wwwroot
-
+ENV ASPNETCORE_URLS=http://+:80
+EXPOSE 8080
 EXPOSE 80
-ENTRYPOINT ["dotnet", "TestAzureDevOps.dll"]
+EXPOSE 443
+ENTRYPOINT ["dotnet", "ChessTutorWeb.dll"]

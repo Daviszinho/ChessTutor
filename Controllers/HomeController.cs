@@ -1,8 +1,8 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using TestAzureDevOps.Models;
+using ChessTutorWeb.Models;
 
-namespace TestAzureDevOps.Controllers;
+namespace ChessTutorWeb.Controllers;
 
 public class HomeController : Controller
 {
