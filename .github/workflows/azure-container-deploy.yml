@@ -12,7 +12,7 @@ env:
   CONTAINER_APP_NAME: "ChessTutorDockerApp"  # Replace with your container app name
 
 jobs:
-  build:LinuxDockerResourceGroup
+  build:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
