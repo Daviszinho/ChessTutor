@@ -9,7 +9,7 @@ env:
   AZURE_CONTAINER_REGISTRY: "chesstutordockercontainerregistry"  # Replace with your ACR name
   CONTAINER_NAME: "chess-tutor"
   RESOURCE_GROUP: "LinuxDockerResourceGroup"  # Replace with your resource group name
-  CONTAINER_APP_NAME: "ChessTutorDockerApp"  # Replace with your container app name
+  CONTAINER_APP_NAME: "chesstutor-dockerapp"  # Container app name in Azure
 
 jobs:
   build:
