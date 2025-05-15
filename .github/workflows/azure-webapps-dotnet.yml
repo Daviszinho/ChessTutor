@@ -10,6 +10,8 @@ env:
   AZURE_WEBAPP_NAME: ChessTutor                     # set this to your application's name
   AZURE_WEBAPP_PACKAGE_PATH: './publish'            # set this to the path to your web app project
   DOTNET_VERSION: '9.0.x'                           # set this to the .NET version to use
+  RESOURCE_GROUP_NAME: ChessTutorResourceGroup      # set this to your resource group name
+  SERVICE_PLAN_NAME: ChessTutorPlan                 # set this to your app service plan name
 
 jobs:
   build:
@@ -48,11 +50,15 @@ jobs:
         with:
           name: .net-app
 
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_CHESSTUTOR }}
           package: .
