@@ -35,10 +35,10 @@ jobs:
     - name: Build and push container image
       uses: docker/build-push-action@v4
       with:
-        context: .
+        context: ./Tutorial
         push: true
         tags: ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.CONTAINER_NAME }}:${{ github.sha }}
-        file: ./Dockerfile
+        file: ./Tutorial/Dockerfile
 
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
