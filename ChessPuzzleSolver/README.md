@@ -1,6 +1,6 @@
 # ChessMaestro - Chess Puzzle Solver
 
-This is a Next.js application that allows users to solve chess puzzles. It's built using `react-chessboard` for the UI and `chess.js` for chess logic.
+This is a Next.js application that allows users to solve chess puzzles. It's built using `react-chessboard` for the UI and `chess.js` for chess logic, containerized with Docker and ready for deployment to Google Cloud Run.
 
 ## Features
 
@@ -33,6 +33,57 @@ This is a Next.js application that allows users to solve chess puzzles. It's bui
     yarn dev
     ```
     The application will typically be available at `http://localhost:9002` (or the port specified in your `package.json` scripts).
+
+## Deployment to Google Cloud Run
+
+This project is configured for deployment to Google Cloud Run using Cloud Build. Follow these steps to deploy:
+
+### Prerequisites
+
+1. Install the [Google Cloud SDK](https://cloud.google.com/sdk/docs/install)
+2. Authenticate with Google Cloud:
+   ```bash
+   gcloud auth login
+   gcloud config set project YOUR_PROJECT_ID
+   ```
+3. Enable required APIs:
+   ```bash
+   gcloud services enable cloudbuild.googleapis.com
+   gcloud services enable run.googleapis.com
+   gcloud services enable containerregistry.googleapis.com
+   ```
+
+### Deploying the Application
+
+1. Submit the build to Cloud Build:
+   ```bash
+   gcloud builds submit --config=cloudbuild.yaml .
+   ```
+
+2. After a successful build, your application will be available at the URL provided in the Cloud Run console.
+
+### Environment Variables
+
+Create a `.env` file in the root directory with the following variables:
+
+```
+NODE_ENV=production
+# Add other environment variables as needed
+```
+
+## Building Locally with Docker
+
+To build and run the container locally:
+
+```bash
+# Build the Docker image
+docker build -t chess-puzzle-solver .
+
+# Run the container
+docker run -p 9002:9002 --env-file .env chess-puzzle-solver
+```
+
+The application will be available at `http://localhost:9002`
 
 ## How to Supply FEN and Solution
 

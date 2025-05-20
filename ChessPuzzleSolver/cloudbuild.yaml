@@ -1,0 +1,76 @@
+steps:
+  # Build the container image with caching
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'build'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        # Pull the latest image for caching if it exists
+        docker pull gcr.io/$PROJECT_ID/chess-puzzle-solver:latest || exit 0
+        
+        # Build with cache from the latest image
+        docker build \
+          --cache-from gcr.io/$PROJECT_ID/chess-puzzle-solver:latest \
+          --tag gcr.io/$PROJECT_ID/chess-puzzle-solver:$COMMIT_SHA \
+          --tag gcr.io/$PROJECT_ID/chess-puzzle-solver:latest \
+          .
+
+    # This timeout prevents builds from running forever
+    timeout: 1800s
+
+  # Push the container image with the commit SHA tag
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'push-versioned'
+    args: ['push', 'gcr.io/$PROJECT_ID/chess-puzzle-solver:$COMMIT_SHA']
+
+  # Push the 'latest' tag
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'push-latest'
+    args: ['push', 'gcr.io/$PROJECT_ID/chess-puzzle-solver:latest']
+
+  # Deploy container to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    id: 'deploy'
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'deploy'
+      - 'chess-puzzle-solver'
+      - '--image'
+      - 'gcr.io/$PROJECT_ID/chess-puzzle-solver:$COMMIT_SHA'
+      - '--region'
+      - 'us-central1'
+      - '--platform'
+      - 'managed'
+      - '--allow-unauthenticated'
+      - '--port'
+      - '3000'
+      - '--cpu'
+      - '1'
+      - '--memory'
+      - '512Mi'
+      - '--min-instances'
+      - '0'
+      - '--max-instances'
+      - '3'
+      - '--set-env-vars'
+      - 'NODE_ENV=production'
+      - '--timeout'
+      - '300s'
+      - '--concurrency'
+      - '80'
+
+# Store images in Container Registry
+images:
+  - 'gcr.io/$PROJECT_ID/chess-puzzle-solver:$COMMIT_SHA'
+  - 'gcr.io/$PROJECT_ID/chess-puzzle-solver:latest'
+
+# Add build timeout (10 minutes)
+timeout: 600s
+
+# Add build options for better caching
+options:
+  logging: CLOUD_LOGGING_ONLY
+  machineType: E2_HIGHCPU_8  # Faster builds with more CPU
+  diskSizeGb: 20  # Increase disk size for node_modules
