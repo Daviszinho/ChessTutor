@@ -1,51 +1,304 @@
-// src/app/page.tsx
-import ChessMaestro from '@/components/ChessMaestro';
-import { Toaster } from "@/components/ui/toaster";
 
-// Example Puzzle 1: Scholar's Mate (White to execute from a certain point)
-// FEN after 1. e4 e5
-const scholarFenStart = "rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq e6 0 2";
-// Solution sequence: White plays Qh5, Black (auto) plays Nc6, White plays Bc4, Black (auto) plays Nf6, White plays Qxf7#
-const scholarSolution = ["Qh5", "Nc6", "Bc4", "Nf6", "Qxf7#"];
+// @ts-nocheck
+// TODO: Fix types
+"use client";
 
-// Example Puzzle 2: Shortest Mate in 1 for White
-const mateInOneFen = "4k3/R7/8/8/8/8/8/4K3 w - - 0 1"; // White to play Ra8#
-const mateInOneSolution = ["Ra8#"];
+import type { CSSProperties } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { Chess } from 'chess.js';
+import type { Piece, Square } from 'react-chessboard/dist/chessboard/types';
+
+import ChessboardClient from '@/components/ChessboardClient';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { getPuzzleAction, type Puzzle } from './actions';
+import { useToast } from "@/hooks/use-toast";
+import { CheckCircle, XCircle, RefreshCcw, Brain, Loader2 } from 'lucide-react';
+
+export default function Home() {
+  const [puzzle, setPuzzle] = useState<Puzzle | null>(null);
+  const [currentFen, setCurrentFen] = useState<string>("start");
+  const [boardOrientation, setBoardOrientation] = useState<'white' | 'black'>('white');
+  const [chessInstance, setChessInstance] = useState<Chess | null>(null);
+  const [solutionMoves, setSolutionMoves] = useState<string[]>([]);
+  const [currentMoveIndex, setCurrentMoveIndex] = useState<number>(0);
+  const [isUserTurn, setIsUserTurn] = useState<boolean>(false);
+  const [isPuzzleSolved, setIsPuzzleSolved] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [moveHistory, setMoveHistory] = useState<string[]>([]);
+
+  const { toast } = useToast();
+
+  const initializeNewPuzzle = useCallback((newPuzzle: Puzzle) => {
+    const chess = new Chess(newPuzzle.fen);
+    setPuzzle(newPuzzle);
+    setCurrentFen(chess.fen());
+    setBoardOrientation(newPuzzle.orientation);
+    setChessInstance(chess);
+    setSolutionMoves(newPuzzle.solution.split(' '));
+    setCurrentMoveIndex(0);
+    setIsPuzzleSolved(false);
+    setMoveHistory([]);
+    setIsLoading(false);
+
+    const initialGameTurn = chess.turn(); // 'w' or 'b'
+    const userPlaysAs = newPuzzle.orientation.charAt(0); // 'w' or 'b'
+
+    // Determine if the user should make the first move of the solution
+    if (initialGameTurn === userPlaysAs) {
+      setIsUserTurn(true); // User makes solutionMoves[0]
+    } else {
+      setIsUserTurn(false); // App makes solutionMoves[0]
+    }
+  }, []);
+
+  const fetchNewPuzzle = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const newPuzzleData = await getPuzzleAction();
+      initializeNewPuzzle(newPuzzleData);
+    } catch (error) {
+      console.error("Failed to fetch puzzle:", error);
+      let toastDescription = "An unexpected error occurred while fetching a new puzzle. Please try again later.";
+      if (error instanceof Error && error.message) {
+        toastDescription = error.message;
+      }
+      toast({
+        title: "Error Fetching Puzzle",
+        description: toastDescription,
+        variant: "destructive",
+      });
+      setIsLoading(false);
+    }
+  }, [initializeNewPuzzle, toast]);
+
+  useEffect(() => {
+    fetchNewPuzzle();
+  }, [fetchNewPuzzle]);
+
+  const makeAppMove = useCallback(() => {
+    if (!chessInstance || !solutionMoves.length || currentMoveIndex >= solutionMoves.length || isUserTurn || isPuzzleSolved || !puzzle) {
+      return;
+    }
+    
+    const moveNotation = solutionMoves[currentMoveIndex];
+    const moveResult = chessInstance.move(moveNotation, { sloppy: true });
 
 
-// Example Puzzle 3: Black to play and mate in 1
-// Position after 1.e4 e5 2.f4 Qh4+ 3.g3. Black to play Qxg3#
-const blackMateInOneSetup = "rnb1kbnr/pppp1ppp/8/4p3/5P1q/N1P3P1/PP1PP2P/R1BQKBNR b KQkq - 0 3"; // Corrected FEN for black to move. Original was missing a move or piece.
-const blackMateInOneSolution = ["Qxg3#"];
+    if (moveResult) {
+      setCurrentFen(chessInstance.fen());
+      setMoveHistory(prev => [...prev, `${Math.floor(currentMoveIndex / 2) + 1}. (App) ${moveResult.san}`]);
+      const newMoveIndex = currentMoveIndex + 1;
+      setCurrentMoveIndex(newMoveIndex);
 
-export default function HomePage() {
-  return (
-    <main className="min-h-screen bg-background text-foreground py-8">
-      <ChessMaestro
-        fen={scholarFenStart} 
-        solution={scholarSolution} 
-        boardOrientation="white" 
-      />
-      {/* 
-      Uncomment to try other puzzles:
+      if (newMoveIndex >= solutionMoves.length) {
+        setIsPuzzleSolved(true);
+        toast({
+          title: "Puzzle Solved!",
+          description: "Congratulations, you've solved the puzzle!",
+          action: <CheckCircle className="text-green-500" />,
+        });
+      } else {
+        setIsUserTurn(true); // Now it's user's turn
+      }
+    } else {
+      console.error("Invalid app move in solution:", moveNotation, "FEN:", chessInstance.fen());
+      toast({ title: "Puzzle Error", description: "The puzzle has an invalid move for the app.", variant: "destructive" });
+    }
+  }, [chessInstance, solutionMoves, currentMoveIndex, isUserTurn, isPuzzleSolved, toast, puzzle]);
+
+  useEffect(() => {
+    // App makes a move if it's not the user's turn, puzzle is active, and there are moves left.
+    if (puzzle && chessInstance && !isLoading && !isPuzzleSolved && !isUserTurn && currentMoveIndex < solutionMoves.length) {
+        const timer = setTimeout(() => {
+          makeAppMove();
+        }, 500); // Delay for "thinking"
+        return () => clearTimeout(timer);
+    }
+  }, [puzzle, chessInstance, isLoading, isPuzzleSolved, isUserTurn, currentMoveIndex, solutionMoves, makeAppMove]);
+
+
+  const handleUserMove = (sourceSquare: Square, targetSquare: Square, piece: Piece): boolean => {
+    if (!chessInstance || !isUserTurn || isPuzzleSolved || currentMoveIndex >= solutionMoves.length || !puzzle) {
+      return false;
+    }
+
+    // Check if the user is moving their designated piece color
+    const userPlaysAsColor = puzzle.orientation.charAt(0);
+    if (piece.charAt(0).toLowerCase() !== userPlaysAsColor) {
+        toast({ title: "Not Your Piece", description: `You are playing as ${puzzle.orientation}. You can only move ${puzzle.orientation} pieces.`, variant: "destructive"});
+        return false;
+    }
+    
+    // Also check if it's actually that color's turn in the game engine
+    if (chessInstance.turn() !== userPlaysAsColor) {
+        toast({ title: "Not Your Turn", description: `It's ${chessInstance.turn() === 'w' ? 'White' : 'Black'}'s turn according to the board.`, variant: "destructive"});
+        // This situation ideally shouldn't be reached if isUserTurn is managed correctly
+        return false;
+    }
+
+
+    const attemptedMoveUci = `${sourceSquare}${targetSquare}`;
+    let promotionChar = '';
+    if ((piece === 'wP' && targetSquare.endsWith('8')) || (piece === 'bP' && targetSquare.endsWith('1'))) {
+      promotionChar = 'q'; 
+    }
+    
+    const expectedMoveUciWithOptionalPromotion = solutionMoves[currentMoveIndex];
+    
+    const moveResult = chessInstance.move({ from: sourceSquare, to: targetSquare, promotion: promotionChar || undefined });
+
+    if (!moveResult) { 
+      toast({ title: "Illegal Move", description: "That move is not allowed.", variant: "destructive", action: <XCircle className="text-red-500" /> });
+      return false; 
+    }
+
+    const madeMoveUci = moveResult.from + moveResult.to + (moveResult.promotion || '');
+
+    if (madeMoveUci.toLowerCase() === expectedMoveUciWithOptionalPromotion.toLowerCase()) {
+      toast({ title: "Correct Move!", description: `You played ${moveResult.san}.`, action: <CheckCircle className="text-green-500" /> });
+      setCurrentFen(chessInstance.fen());
+      setMoveHistory(prev => [...prev, `${Math.floor(currentMoveIndex / 2) + 1}. (You) ${moveResult.san}`]);
       
-      <div className="my-12 border-t-2 border-dashed border-primary pt-8">
-        <ChessMaestro
-          fen={mateInOneFen}
-          solution={mateInOneSolution}
-          boardOrientation="white" 
-        />
-      </div>
+      const newMoveIndex = currentMoveIndex + 1;
+      setCurrentMoveIndex(newMoveIndex);
 
-      <div className="my-12 border-t-2 border-dashed border-primary pt-8">
-        <ChessMaestro
-          fen={blackMateInOneSetup}
-          solution={blackMateInOneSolution}
-          boardOrientation="black"
-        />
-      </div> 
-      */}
-      <Toaster />
-    </main>
+      if (newMoveIndex >= solutionMoves.length) {
+        setIsPuzzleSolved(true);
+        toast({
+          title: "Puzzle Solved!",
+          description: "Congratulations, you've solved the puzzle!",
+          action: <CheckCircle className="text-green-500" />,
+        });
+      } else {
+        setIsUserTurn(false); // App's turn now
+      }
+      return true; 
+    } else {
+      toast({ title: "Incorrect Move", description: `Expected the solution move, but you played ${moveResult.san}. Try again.`, variant: "destructive", action: <XCircle className="text-red-500" /> });
+      chessInstance.undo(); 
+      setCurrentFen(chessInstance.fen()); // Reflect the undone move on the board
+      return false; 
+    }
+  };
+
+  const handleResetPuzzle = () => {
+    if (puzzle) {
+      const chess = new Chess(puzzle.fen);
+      setCurrentFen(chess.fen());
+      setBoardOrientation(puzzle.orientation);
+      setChessInstance(chess);
+      // solutionMoves is already set from the current puzzle
+      setCurrentMoveIndex(0);
+      setIsPuzzleSolved(false);
+      setMoveHistory([]);
+      setIsLoading(false); 
+      toast({ title: "Puzzle Reset", description: "The current puzzle has been reset." });
+
+      const initialGameTurn = chess.turn();
+      const userPlaysAs = puzzle.orientation.charAt(0);
+      if (initialGameTurn === userPlaysAs) {
+        setIsUserTurn(true);
+      } else {
+        setIsUserTurn(false); // App will make the first move via useEffect
+      }
+    }
+  };
+  
+  const boardWrapperStyle: CSSProperties = {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    padding: '1rem 0',
+  };
+
+  return (
+    <div className="flex flex-col items-center min-h-screen bg-background text-foreground p-4 font-sans">
+      <header className="my-6 text-center">
+        <h1 className="text-5xl font-bold text-primary flex items-center justify-center">
+          <Brain className="w-12 h-12 mr-3 text-accent" />
+          ChessEnigma
+        </h1>
+        <p className="text-muted-foreground mt-1 text-lg">Solve chess puzzles and sharpen your tactical mind.</p>
+      </header>
+
+      <main className="flex flex-col lg:flex-row gap-6 items-start w-full max-w-6xl">
+        <Card className="lg:flex-1 w-full shadow-xl">
+          <CardContent className="p-2 sm:p-4 flex justify-center">
+            {isLoading || !chessInstance ? (
+              <div className="w-full h-[300px] sm:h-[400px] flex items-center justify-center bg-muted/50 rounded-md">
+                <Loader2 className="w-12 h-12 animate-spin text-primary" />
+              </div>
+            ) : (
+              <ChessboardClient
+                fen={currentFen}
+                onPieceDrop={handleUserMove}
+                boardOrientation={boardOrientation}
+                arePiecesDraggable={isUserTurn && !isPuzzleSolved && !isLoading}
+                customDarkSquareStyle={{ backgroundColor: 'hsl(var(--primary) / 0.8)'}}
+                customLightSquareStyle={{ backgroundColor: 'hsl(var(--background))'}}
+              />
+            )}
+          </CardContent>
+        </Card>
+
+        <div className="w-full lg:w-1/3 space-y-4">
+          <Card className="shadow-lg">
+            <CardHeader>
+              <CardTitle className="text-2xl text-primary">Controls & Status</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <Button onClick={fetchNewPuzzle} className="w-full bg-accent hover:bg-accent/90 text-accent-foreground" disabled={isLoading}>
+                {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <RefreshCcw className="mr-2 h-4 w-4" />}
+                New Puzzle
+              </Button>
+              <Button onClick={handleResetPuzzle} variant="outline" className="w-full" disabled={isLoading || !puzzle}>
+                Reset Current Puzzle
+              </Button>
+              <div className="p-3 bg-muted rounded-md text-center">
+                {isPuzzleSolved ? (
+                  <p className="font-semibold text-green-600">Puzzle Solved! Well done!</p>
+                ) : isLoading ? (
+                  <p className="font-semibold text-primary">Loading puzzle...</p>
+                ) : puzzle && isUserTurn ? (
+                  <p className="font-semibold text-accent-foreground animate-pulse">Your turn ({puzzle.orientation}) to move.</p>
+                ) : puzzle ? (
+                  <p className="font-semibold text-primary">App is thinking... ({chessInstance?.turn() === 'w' ? "White" : "Black"} to move)</p>
+                ): (
+                   <p className="font-semibold text-primary">App is thinking...</p>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="shadow-lg">
+            <CardHeader>
+              <CardTitle className="text-2xl text-primary">Move History</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ScrollArea className="h-48 w-full rounded-md border p-3 bg-muted/30">
+                {moveHistory.length === 0 ? (
+                  <p className="text-muted-foreground italic">No moves yet.</p>
+                ) : (
+                  <ol className="list-decimal list-inside space-y-1">
+                    {moveHistory.map((move, index) => (
+                      <li key={index} className="text-sm">{move}</li>
+                    ))}
+                  </ol>
+                )}
+              </ScrollArea>
+            </CardContent>
+          </Card>
+        </div>
+      </main>
+
+      <footer className="mt-auto pt-10 pb-4 text-center text-sm text-muted-foreground">
+        <p>&copy; {new Date().getFullYear()} ChessEnigma. All rights reserved.</p>
+        <p>Powered by Next.js, TailwindCSS, and a passion for chess.</p>
+      </footer>
+    </div>
   );
 }
+

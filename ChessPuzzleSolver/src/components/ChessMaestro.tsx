@@ -1,7 +1,7 @@
 // src/components/ChessMaestro.tsx
 "use client";
 
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import type { FC } from 'react';
 import { Chess, type Square } from 'chess.js';
 import { Chessboard, type Piece, type BoardOrientation } from 'react-chessboard';
@@ -18,50 +18,72 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'; // Added import
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import SolutionPanel from './SolutionPanel';
 import { Terminal, CheckCircle, XCircle, Eye, EyeOff, RotateCcw } from 'lucide-react';
 
 interface ChessMaestroProps {
   fen: string;
-  solution: string[]; // Array of SAN moves, includes player and opponent moves
-  boardOrientation?: BoardOrientation;
+  solution: string[]; // Array of moves in format "e2-e4"
 }
 
-const ChessMaestro: FC<ChessMaestroProps> = ({ fen, solution, boardOrientation = 'white' }) => {
-  const game = useMemo(() => new Chess(), []);
-  const [currentFen, setCurrentFen] = useState<string>(fen);
-  const [currentMoveIndex, setCurrentMoveIndex] = useState<number>(0); // Index in the 'solution' array
+const ChessMaestro: FC<ChessMaestroProps> = ({ fen, solution }) => {
+  const game = useMemo(() => new Chess(fen), [fen]);
+  const [currentFen, setCurrentFen] = useState<string>(game.fen());
+  const [currentMoveIndex, setCurrentMoveIndex] = useState<number>(0);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isSolved, setIsSolved] = useState<boolean>(false);
   const [showSolutionPanel, setShowSolutionPanel] = useState<boolean>(false);
   const [optionSquares, setOptionSquares] = useState<CustomSquareStyles>({});
   const [moveFrom, setMoveFrom] = useState<Square | ''>('');
   const [rightClickedSquares, setRightClickedSquares] = useState<CustomSquareStyles>({});
-
-  const playerColor = useMemo(() => (boardOrientation === 'white' ? 'w' : 'b'), [boardOrientation]);
-
+  const [orientation, setOrientation] = useState<BoardOrientation>('white');
+  
+  // Set up the game and orientation when component mounts or FEN changes
+  useEffect(() => {
+    try {
+      game.load(fen);
+      setCurrentFen(game.fen());
+      setCurrentMoveIndex(0);
+      setIsSolved(false);
+      setErrorMessage(null);
+      setOptionSquares({});
+      setMoveFrom('');
+      setRightClickedSquares({});
+      const turn = fen.split(' ')[1];
+      setOrientation(turn === 'w' ? 'white' : 'black');
+    } catch (error) {
+      setErrorMessage('Failed to initialize the game. Please try again.');
+    }
+  }, [fen, game]);
+  
   const resetPuzzle = useCallback(() => {
     try {
       game.load(fen);
     } catch (e) {
-      console.error("Invalid FEN", e);
       setErrorMessage("Error: Invalid starting position (FEN).");
-      game.load('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'); // Default FEN
+      game.load('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1');
     }
     setCurrentFen(game.fen());
     setCurrentMoveIndex(0);
     setErrorMessage(null);
     setIsSolved(false);
-    // setShowSolutionPanel(false); // Keep solution panel state if user wants it open
     setOptionSquares({});
     setMoveFrom('');
     setRightClickedSquares({});
   }, [fen, game]);
 
+  // Only reset state when FEN or solution changes (no auto-move here)
   useEffect(() => {
-    resetPuzzle();
-  }, [fen, solution, resetPuzzle]);
+    game.load(fen);
+    setCurrentFen(game.fen());
+    setCurrentMoveIndex(0);
+    setErrorMessage(null);
+    setIsSolved(false);
+    setOptionSquares({});
+    setMoveFrom('');
+    setRightClickedSquares({});
+  }, [fen, solution, game]);
 
   const highlightLegalMoves = useCallback((sourceSquare: Square) => {
     const moves = game.moves({ square: sourceSquare, verbose: true });
@@ -86,68 +108,103 @@ const ChessMaestro: FC<ChessMaestroProps> = ({ fen, solution, boardOrientation =
   }, [game]);
 
   const onPieceDragBegin = useCallback((_piece: Piece, sourceSquare: Square) => {
-    if (game.turn() !== playerColor || isSolved) return;
+    // Check if it's the player's turn
+    const isPlayerTurn = (game.turn() === 'w' && orientation === 'white') || 
+                       (game.turn() === 'b' && orientation === 'black');
+    
+    if (!isPlayerTurn || isSolved) return;
+    
+    // Check if the piece being dragged belongs to the player
+    const pieceOnSquare = game.get(sourceSquare);
+    const pieceColor = pieceOnSquare?.color === 'w' ? 'white' : 'black';
+    if (pieceColor !== orientation) return;
+    
     setMoveFrom(sourceSquare);
     highlightLegalMoves(sourceSquare);
-  }, [game, playerColor, isSolved, highlightLegalMoves]);
+  }, [game, isSolved, orientation, highlightLegalMoves]);
 
   const handleMoveProcessing = useCallback((source: Square, target: Square, promotionPiece?: PromotionPieceOption): boolean => {
-    if (isSolved || game.turn() !== playerColor) return false;
+    if (isSolved) return false;
+    
+    // Check if it's the player's turn
+    const isPlayerTurn = (game.turn() === 'w' && orientation === 'white') || 
+                        (game.turn() === 'b' && orientation === 'black');
+    
+    if (!isPlayerTurn) {
+      setErrorMessage("Please wait for your turn.");
+      return false;
+    }
 
-    const expectedMoveSan = solution[currentMoveIndex];
-    if (!expectedMoveSan) {
-        setErrorMessage("No more moves in solution.");
-        return false;
+    const expectedMove = solution[currentMoveIndex];
+    if (!expectedMove) {
+      setErrorMessage("No more moves in solution.");
+      return false;
     }
 
     try {
-      // Create a temporary game instance to validate the move's SAN form
-      // without altering the main game state yet.
-      const tempGame = new Chess(game.fen());
-      const attemptedMoveObject = tempGame.move({
-        from: source,
-        to: target,
-        promotion: promotionPiece,
-      });
-
-      if (attemptedMoveObject === null) {
-        setErrorMessage("That's an illegal move.");
-        return false; // Move is illegal by chess.js rules
-      }
-      
-      const normalizeSan = (san: string) => san.replace(/[+#]$/, ''); // Remove check/mate symbols
-      const normalizedAttemptedSan = normalizeSan(attemptedMoveObject.san);
-      const normalizedExpectedSan = normalizeSan(expectedMoveSan);
-
-      if (normalizedAttemptedSan === normalizedExpectedSan) {
-        // Correct move, apply to the main game instance
-        game.move({ from: source, to: target, promotion: promotionPiece });
-        setCurrentFen(game.fen()); // Update the board display
-        setErrorMessage(null);
-        
-        const newMoveIndex = currentMoveIndex + 1;
-        setCurrentMoveIndex(newMoveIndex);
-
-        if (newMoveIndex >= solution.length) {
-          setIsSolved(true); // Puzzle solved
-        }
-        // Automatic opponent move will be handled by the useEffect listening to currentFen/currentMoveIndex
-        return true;
-      } else {
-        // Move is legal but not the correct one for the puzzle
-        setErrorMessage(`Incorrect move (${attemptedMoveObject.san}). Expected: ${expectedMoveSan}. Try again.`);
+      // Convert the expected move from "e2-e4" to {from, to} format
+      const [expectedFrom, expectedTo] = expectedMove.split('-');
+      if (!expectedFrom || !expectedTo) {
+        setErrorMessage("Invalid move format in solution.");
         return false;
       }
+
+      // Check if the move matches the expected move
+      if (source !== expectedFrom || target !== expectedTo) {
+        // Try to get the piece for a more descriptive error message
+        const piece = game.get(source);
+        const pieceName = piece ? piece.type.toUpperCase() : 'Piece';
+        setErrorMessage(`Incorrect move (${pieceName} to ${target}). Try again.`);
+        return false;
+      }
+
+      // Make the move on the actual game
+      const move = {
+        from: source,
+        to: target,
+        promotion: promotionPiece || 'q' // Default to queen promotion if not specified
+      };
+
+      const result = game.move(move);
+      if (!result) {
+        setErrorMessage("That's an illegal move.");
+        return false;
+      }
+
+      console.log('Player made move:', move);
+      console.log('Current FEN after player move:', game.fen());
+      console.log('Next to move:', game.turn() === 'w' ? 'white' : 'black');
+
+      // Update the board state
+      setCurrentFen(game.fen());
+      setErrorMessage(null);
+      
+      // Move to the next move in the solution
+      const newMoveIndex = currentMoveIndex + 1;
+      setCurrentMoveIndex(newMoveIndex);
+
+      // Check if puzzle is solved (no more moves)
+      if (newMoveIndex >= solution.length) {
+        setIsSolved(true);
+        return true;
+      }
+
+      // The computer will make the next move via the useEffect
+      return true;
     } catch (error) {
-      // Catch any unexpected errors during move processing
       console.error("Error making move:", error);
       setErrorMessage("An unexpected error occurred while processing the move.");
       return false;
     }
-  }, [game, playerColor, isSolved, solution, currentMoveIndex]);
+  }, [game, isSolved, solution, currentMoveIndex]);
 
   const onSquareClick = useCallback((square: Square) => {
-    if (game.turn() !== playerColor || isSolved) return;
+    if (isSolved) return;
+    
+    // Check if it's the player's turn
+    const isPlayerTurn = (game.turn() === 'w' && orientation === 'white') || 
+                       (game.turn() === 'b' && orientation === 'black');
+    if (!isPlayerTurn) return;
 
     if (moveFrom) { // A piece is already selected, try to move it
       handleMoveProcessing(moveFrom, square);
@@ -155,72 +212,103 @@ const ChessMaestro: FC<ChessMaestroProps> = ({ fen, solution, boardOrientation =
       setOptionSquares({}); // Clear highlights after attempting move
     } else { // No piece selected, try to select one
       const pieceOnSquare = game.get(square);
-      if (pieceOnSquare && pieceOnSquare.color === game.turn()) {
+      const pieceColor = pieceOnSquare?.color === 'w' ? 'white' : 'black';
+      if (pieceOnSquare && pieceColor === orientation) {
         setMoveFrom(square);
         highlightLegalMoves(square);
       }
     }
-  }, [moveFrom, game, playerColor, isSolved, highlightLegalMoves, handleMoveProcessing]);
+  }, [moveFrom, game, isSolved, orientation, handleMoveProcessing, highlightLegalMoves]);
 
   const onMouseOverSquare = useCallback((square: Square) => {
-    if (!moveFrom && game.turn() === playerColor && !isSolved) {
-       const pieceOnSquare = game.get(square);
-       if (pieceOnSquare && pieceOnSquare.color === game.turn()) {
-         highlightLegalMoves(square);
-       }
+    if (isSolved) return;
+    
+    // Check if it's the player's turn
+    const isPlayerTurn = (game.turn() === 'w' && orientation === 'white') || 
+                       (game.turn() === 'b' && orientation === 'black');
+    if (!isPlayerTurn) return;
+
+    if (!moveFrom) {
+      const pieceOnSquare = game.get(square);
+      const pieceColor = pieceOnSquare?.color === 'w' ? 'white' : 'black';
+      if (pieceOnSquare && pieceColor === orientation) {
+        highlightLegalMoves(square);
+      }
     }
-  }, [moveFrom, game, playerColor, isSolved, highlightLegalMoves]);
+  }, [moveFrom, game, isSolved, orientation, highlightLegalMoves]);
 
   const onMouseOutSquare = useCallback(() => {
     if (!moveFrom) { // Only clear highlights if not actively selecting a piece
-        setOptionSquares({});
+      setOptionSquares({});
     }
   }, [moveFrom]);
   
-  const onPieceDrop = useCallback((sourceSquare: Square, targetSquare: Square, _piece: Piece): boolean => {
-    if (game.turn() !== playerColor || isSolved) return false;
-    // Promotion will be handled by react-chessboard's default dialog if needed.
-    // The `promotion` argument would be passed to handleMoveProcessing by react-chessboard if a promotion occurs.
-    // For simplicity, this example doesn't explicitly handle the promotion dialog callback here,
-    // assuming react-chessboard provides the promotion piece to the move function if one is chosen.
-    // `chess.js` itself needs the promotion piece for pawn promotion moves.
-    // `react-chessboard` onPieceDrop usually returns a boolean to accept/reject the move visually.
-    const success = handleMoveProcessing(sourceSquare, targetSquare);
+  const onPieceDrop = useCallback((sourceSquare: Square, targetSquare: Square, piece: Piece): boolean => {
+    if (isSolved) return false;
+    
+    // Check if it's the player's turn
+    const isPlayerTurn = (game.turn() === 'w' && orientation === 'white') || 
+                       (game.turn() === 'b' && orientation === 'black');
+    if (!isPlayerTurn) return false;
+    
+    // Check if the piece being moved belongs to the player
+    const pieceOnSquare = game.get(sourceSquare);
+    const pieceColor = pieceOnSquare?.color === 'w' ? 'white' : 'black';
+    if (pieceColor !== orientation) return false;
+    
+    // Handle the move
+    const success = handleMoveProcessing(sourceSquare, targetSquare, piece[1]?.toLowerCase() as PromotionPieceOption);
     setMoveFrom(''); // Reset piece selection state
     setOptionSquares({}); // Clear highlights
-    return success; 
-  }, [game, playerColor, isSolved, handleMoveProcessing]);
+    return success;
+  }, [game, isSolved, orientation, handleMoveProcessing]);
   
-  // Effect for automatic opponent moves
+  // Effect for automatic moves (computer's turn)
   useEffect(() => {
-    if (isSolved || game.turn() === playerColor || currentMoveIndex >= solution.length) {
-      return; // Not opponent's turn, or puzzle solved, or no more moves
+    // Determine who starts the puzzle
+    const playerStarts = (fen.split(' ')[1] === (orientation === 'white' ? 'w' : 'b'));
+    // Computer moves are at odd indices if player starts, even if computer starts
+    const isComputerTurn = playerStarts
+      ? currentMoveIndex % 2 === 1
+      : currentMoveIndex % 2 === 0;
+
+    if (isSolved || !isComputerTurn || currentMoveIndex >= solution.length) {
+      return;
     }
 
-    // Opponent's turn
-    const makeOpponentMove = async () => {
-      const opponentMoveSan = solution[currentMoveIndex];
-      if (!opponentMoveSan) return; // Should not happen if logic is correct
+    const makeComputerMove = async () => {
+      const computerMove = solution[currentMoveIndex];
+      if (!computerMove) return;
 
-      await new Promise(resolve => setTimeout(resolve, 500)); // Small delay for UI
+      const [from, to] = computerMove.split('-');
+      if (!from || !to || from.length !== 2 || to.length !== 2) {
+        console.error('Invalid move format in solution:', computerMove);
+        return;
+      }
 
-      const moveResult = game.move(opponentMoveSan);
-      if (moveResult) {
+      await new Promise(resolve => setTimeout(resolve, 500));
+
+      try {
+        game.move({
+          from: from as Square,
+          to: to as Square,
+          promotion: 'q'
+        });
+
         setCurrentFen(game.fen());
         const newMoveIndex = currentMoveIndex + 1;
         setCurrentMoveIndex(newMoveIndex);
+
         if (newMoveIndex >= solution.length) {
           setIsSolved(true);
         }
-      } else {
-        setErrorMessage(`Critical Error in Solution: Opponent's programmed move (${opponentMoveSan}) is invalid.`);
-        console.error("Invalid opponent move in solution sequence:", opponentMoveSan, "FEN:", game.fen());
-        // This indicates a problem with the provided 'solution' array.
+      } catch (error) {
+        setErrorMessage(`Error making move: ${computerMove}. The puzzle might be unsolvable.`);
       }
     };
 
-    makeOpponentMove();
-  }, [currentFen, currentMoveIndex, game, isSolved, playerColor, solution]); // currentFen ensures this runs after player's move updates state
+    makeComputerMove();
+  }, [currentFen, currentMoveIndex, game, isSolved, orientation, solution, fen]);
 
 
   const toggleSolutionPanel = () => {
@@ -239,6 +327,18 @@ const ChessMaestro: FC<ChessMaestroProps> = ({ fen, solution, boardOrientation =
     }));
   }, []);
 
+  // Log the current state for debugging
+  console.log('Rendering ChessMaestro', {
+    currentFen,
+    orientation,
+    currentMoveIndex,
+    solutionLength: solution.length,
+    isSolved,
+    turn: game.turn(),
+    playerTurn: (game.turn() === 'w' && orientation === 'white') || 
+               (game.turn() === 'b' && orientation === 'black') ? 'player' : 'computer'
+  });
+
   return (
     <div className="container mx-auto p-4 flex flex-col items-center" style={{ maxWidth: '600px' }}>
       <header className="w-full mb-6 text-center">
@@ -256,14 +356,17 @@ const ChessMaestro: FC<ChessMaestroProps> = ({ fen, solution, boardOrientation =
           onMouseOverSquare={onMouseOverSquare}
           onMouseOutSquare={onMouseOutSquare}
           onSquareRightClick={onSquareRightClick}
-          boardOrientation={boardOrientation}
+          boardOrientation={orientation}
           customBoardStyle={{
-            borderRadius: '0px', 
-            boxShadow: 'none', 
+            borderRadius: '0px',
+            boxShadow: 'none',
           }}
           customDarkSquareStyle={{ backgroundColor: 'hsl(var(--secondary))' }}
           customLightSquareStyle={{ backgroundColor: 'hsl(var(--muted))' }}
-          arePiecesDraggable={!isSolved && game.turn() === playerColor}
+          arePiecesDraggable={!isSolved && (
+            (game.turn() === 'w' && orientation === 'white') || 
+            (game.turn() === 'b' && orientation === 'black')
+          )}
           customSquareStyles={{
             ...optionSquares,
             ...rightClickedSquares
@@ -302,12 +405,19 @@ const ChessMaestro: FC<ChessMaestroProps> = ({ fen, solution, boardOrientation =
             solution={solution} 
             isOpen={showSolutionPanel} 
             currentOverallMoveIndex={currentMoveIndex} 
-            initialFen={fen} // Pass the original FEN for consistent turn calculation
-            playerColor={playerColor}
+            initialFen={fen}
+            boardOrientation={orientation}
           />
         </div>
       )}
 
+      {isSolved && (
+        <Alert className="mb-4 bg-green-50 border-green-200">
+          <CheckCircle className="h-5 w-5 text-green-600" />
+          <AlertTitle>Puzzle Solved!</AlertTitle>
+          <AlertDescription>Great job! You've completed the puzzle.</AlertDescription>
+        </Alert>
+      )}
       <AlertDialog open={isSolved}>
         <AlertDialogContent onEscapeKeyDown={(e) => e.preventDefault()} onInteractOutside={(e) => e.preventDefault()}>
           <AlertDialogHeader>

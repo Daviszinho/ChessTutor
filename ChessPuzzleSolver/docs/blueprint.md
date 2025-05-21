@@ -1,18 +1,17 @@
-# **App Name**: ChessMaestro
+# **App Name**: ChessEnigma
 
 ## Core Features:
 
-- Board Setup: Accepts a FEN string and renders the initial chess position.
-- Puzzle Solution Logic: Verifies user moves against a provided SAN solution, advancing upon correct moves and displaying error messages for incorrect attempts. Announces victory after the final correct move.
-- Interactive Piece Movement: Enables pieces to be moved by dragging. Highlights legal destination squares during piece selection or hover.
-- Solution Display: A collapsible panel reveals the full solution move list, toggled via a dedicated function.
+- Fetch Puzzle: Fetch a chess puzzle (FEN and solution) from the `BIGQuery gcloud idyllic-parser-460423-r0.matechessproblems.getPuzzle` stored procedure.
+- Display Board: Display the chessboard using chessboard.js with the fetched FEN.
+- Move Validation: Enforce alternating turns between the app and the user, starting with the app suggesting the first move. Track whether the user correctly makes the right moves according to the solution to the chess problem.
+- Feedback Display: Provide visual feedback on move correctness and puzzle completion status.
 
 ## Style Guidelines:
 
-- Primary color: Deep indigo (#4B0082) to evoke a sense of strategy and depth, reminiscent of classic chess sets. This will contrast nicely in a light color scheme.
-- Background color: Light grey (#E0E0E0) for a clean and neutral backdrop.
-- Accent color: A muted purple (#800080) for interactive elements such as highlighting legal moves or displaying the congratulations banner.
-- Clean, readable font for displaying FEN strings and error messages.
-- Simple icons to indicate legal moves or solution display.
-- Minimal layout, focusing on the board, status area, and collapsible solution panel.
-- Subtle piece movement animations.
+- Primary color: A deep, saturated blue (#3F51B5), evoking intellect and strategic thinking.
+- Background color: A light, desaturated blue (#E8EAF6), providing a clean, unobtrusive backdrop.
+- Accent color: A vibrant orange (#FF9800) to highlight interactive elements and important feedback.
+- Clean, modern typography optimized for readability on digital screens.
+- Simple, clear icons for intuitive navigation and feature representation.
+- Clean and spacious layout to keep users focused on the chessboard, making it easy to view the pieces and state of play.
