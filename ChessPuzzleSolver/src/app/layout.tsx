@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: 'ChessEnigma',
-  description: 'Solve chess puzzles and sharpen your mind.',
+  description: 'Resuelve problemas de ajedrez y afila tu instinto',
 };
 
 export default function RootLayout({

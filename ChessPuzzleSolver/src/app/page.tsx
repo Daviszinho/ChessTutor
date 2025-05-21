@@ -95,8 +95,8 @@ export default function Home() {
       if (newMoveIndex >= solutionMoves.length) {
         setIsPuzzleSolved(true);
         toast({
-          title: "Puzzle Solved!",
-          description: "Congratulations, you've solved the puzzle!",
+          title: "¡Problema Resuelto!",
+          description: "¡Felicidades, has resuelto el problema!",
           action: <CheckCircle className="text-green-500" />,
         });
       } else {
@@ -104,7 +104,7 @@ export default function Home() {
       }
     } else {
       console.error("Invalid app move in solution:", moveNotation, "FEN:", chessInstance.fen());
-      toast({ title: "Puzzle Error", description: "The puzzle has an invalid move for the app.", variant: "destructive" });
+      toast({ title: "¡Error en el Problema!", description: "El problema tiene un movimiento inválido para la app.", variant: "destructive" });
     }
   }, [chessInstance, solutionMoves, currentMoveIndex, isUserTurn, isPuzzleSolved, toast, puzzle]);
 
@@ -127,7 +127,7 @@ export default function Home() {
     // Check if the user is moving their designated piece color
     const userPlaysAsColor = puzzle.orientation.charAt(0);
     if (piece.charAt(0).toLowerCase() !== userPlaysAsColor) {
-        toast({ title: "Not Your Piece", description: `You are playing as ${puzzle.orientation}. You can only move ${puzzle.orientation} pieces.`, variant: "destructive"});
+        toast({ title: " ¡No es tu pieza!", description: `You are playing as ${puzzle.orientation}. You can only move ${puzzle.orientation} pieces.`, variant: "destructive"});
         return false;
     }
     
@@ -221,7 +221,7 @@ export default function Home() {
           <Brain className="w-12 h-12 mr-3 text-accent" />
           ChessEnigma
         </h1>
-        <p className="text-muted-foreground mt-1 text-lg">Solve chess puzzles and sharpen your tactical mind.</p>
+        <p className="text-muted-foreground mt-1 text-lg">Resuelve problemas de ajedrez y afila tu instinto</p>
       </header>
 
       <main className="flex flex-col lg:flex-row gap-6 items-start w-full max-w-6xl">
@@ -247,27 +247,27 @@ export default function Home() {
         <div className="w-full lg:w-1/3 space-y-4">
           <Card className="shadow-lg">
             <CardHeader>
-              <CardTitle className="text-2xl text-primary">Controls & Status</CardTitle>
+              <CardTitle className="text-2xl text-primary">Estado</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <Button onClick={fetchNewPuzzle} className="w-full bg-accent hover:bg-accent/90 text-accent-foreground" disabled={isLoading}>
                 {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <RefreshCcw className="mr-2 h-4 w-4" />}
-                New Puzzle
+                Nuevo Problema
               </Button>
               <Button onClick={handleResetPuzzle} variant="outline" className="w-full" disabled={isLoading || !puzzle}>
-                Reset Current Puzzle
+                Reiniciar problema
               </Button>
               <div className="p-3 bg-muted rounded-md text-center">
                 {isPuzzleSolved ? (
-                  <p className="font-semibold text-green-600">Puzzle Solved! Well done!</p>
+                  <p className="font-semibold text-green-600">¡Problema Resuelto! ¡Bien hecho!</p>
                 ) : isLoading ? (
-                  <p className="font-semibold text-primary">Loading puzzle...</p>
+                  <p className="font-semibold text-primary">Cargando problema...</p>
                 ) : puzzle && isUserTurn ? (
-                  <p className="font-semibold text-accent-foreground animate-pulse">Your turn ({puzzle.orientation}) to move.</p>
+                  <p className="font-semibold text-accent-foreground animate-pulse">Tu turno ({puzzle.orientation}) para mover.</p>
                 ) : puzzle ? (
-                  <p className="font-semibold text-primary">App is thinking... ({chessInstance?.turn() === 'w' ? "White" : "Black"} to move)</p>
+                  <p className="font-semibold text-primary">¡La app está pensando... ({chessInstance?.turn() === 'w' ? "Blanco" : "Negro"} para mover)</p>
                 ): (
-                   <p className="font-semibold text-primary">App is thinking...</p>
+                   <p className="font-semibold text-primary">¡La app está pensando...</p>
                 )}
               </div>
             </CardContent>
@@ -275,7 +275,7 @@ export default function Home() {
 
           <Card className="shadow-lg">
             <CardHeader>
-              <CardTitle className="text-2xl text-primary">Move History</CardTitle>
+              <CardTitle className="text-2xl text-primary">Historial de Movimientos</CardTitle>
             </CardHeader>
             <CardContent>
               <ScrollArea className="h-48 w-full rounded-md border p-3 bg-muted/30">
