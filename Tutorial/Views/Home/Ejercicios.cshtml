@@ -1,20 +1,23 @@
-
 @{
     ViewData["Title"] = "Ejercicios";
 }
 
-<div class="mt-5">
-    <div class="ratio ratio-16x9">
-        <iframe 
-            src="https://chess-puzzle-solver-674748941743.us-central1.run.app/"
-            title="Problemas de Ajedrez"
-            allowfullscreen>
-        </iframe>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-12">
+            <div class="chess-puzzle-container">
+                <iframe 
+                    src="https://chess-puzzle-solver-674748941743.us-central1.run.app/"
+                    title="Problemas de Ajedrez"
+                    allowfullscreen>
+                </iframe>
+            </div>
+            <p class="mt-2 text-muted text-center">
+                <small>Si el iframe no carga, puedes abrirlo en una 
+                <a href="https://chess-puzzle-solver-674748941743.us-central1.run.app/" target="_blank">nueva pestaña</a>.</small>
+            </p>
+        </div>
     </div>
-    <p class="mt-2 text-muted">
-        <small>Si la no carga, puedes abrirlo en una 
-        <a href="https://chess-puzzle-solver-674748941743.us-central1.run.app/" target="_blank">nueva pestaña</a>.</small>
-    </p>
 </div>
 <!--
 <font size="5">S</font>e presentan los siguientes ejercicios donde el objetivo 
@@ -66,4 +69,3 @@ es hallar una serie de jugadas donde se gana con mate la partida.<br>
 </table>
 
 -->
-

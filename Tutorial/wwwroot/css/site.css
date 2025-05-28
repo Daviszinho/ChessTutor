@@ -30,6 +30,38 @@ body {
   text-align: start;
 }
 
+/* Chess puzzle iframe container */
+.chess-puzzle-container {
+    position: relative;
+    width: 100%;
+    padding-bottom: 75%; /* 4:3 Aspect Ratio */
+    height: 0;
+    overflow: hidden;
+    margin: 0 auto;
+    background: #f8f9fa;
+}
 
+.chess-puzzle-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+}
 
+/* Ajustar la relación de aspecto para pantallas grandes */
+@media (min-width: 768px) {
+    .chess-puzzle-container {
+        max-width: 1200px; /* Ancho máximo para pantallas grandes */
+        padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+    }
+}
 
+/* Ajustes adicionales para pantallas pequeñas */
+@media (max-width: 576px) {
+    .chess-puzzle-container {
+        padding-bottom: 100%; /* 1:1 Aspect Ratio para móviles */
+    }
+}
