@@ -369,7 +369,6 @@ export default function Home() {
           <LanguageSwitcher />
         </div>
       </header>
-
       <main className="flex flex-col lg:flex-row gap-6 items-start w-full max-w-6xl">
         <Card className="lg:flex-1 w-full shadow-xl">
           <CardContent className="p-2 sm:p-4 flex justify-center">
