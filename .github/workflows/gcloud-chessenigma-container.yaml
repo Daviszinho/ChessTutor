@@ -30,6 +30,8 @@ jobs:
         project_id: idyllic-parser-460423-r0
         create_credentials_file: true
         token_format: access_token
+        audience: https://token.actions.githubusercontent.com  # Añade esta línea
+
     
     - name: Set up Cloud SDK
       uses: google-github-actions/setup-gcloud@v1
