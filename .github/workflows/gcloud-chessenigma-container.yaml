@@ -29,6 +29,8 @@ jobs:
         service_account: 674748941743-compute@developer.gserviceaccount.com
         project_id: idyllic-parser-460423-r0
         create_credentials_file: true
+        audience: https://token.actions.githubusercontent.com
+        token_format: access_token
     
     - name: Set up Cloud SDK
       uses: google-github-actions/setup-gcloud@v1
