@@ -49,16 +49,16 @@ jobs:
           
           # Construye la imagen
           echo "Construyendo la imagen Docker..."
-          docker build -t us-docker.pkg.dev/idyllic-parser-460423-r0/gcr.io/chess-puzzle-solver:${{ github.sha }} .
+          docker build -t us-docker.pkg.dev/idyllic-parser-460423-r0/gcr.io/chesspuzzlesolver:${{ github.sha }} .
           
           # Sube la imagen
           echo "Subiendo la imagen a Artifact Registry..."
-          docker push us-docker.pkg.dev/idyllic-parser-460423-r0/gcr.io/chess-puzzle-solver:${{ github.sha }}
+          docker push us-docker.pkg.dev/idyllic-parser-460423-r0/gcr.io/chesspuzzlesolver:${{ github.sha }}
       
     - name: Deploy to Cloud Run
       run: |-
-        gcloud run deploy chess-puzzle-solver \
-          --image=us-docker.pkg.dev/idyllic-parser-460423-r0/gcr.io/chess-puzzle-solver:${{ github.sha }} \
+        gcloud run deploy chesspuzzlesolver \
+          --image=us-docker.pkg.dev/idyllic-parser-460423-r0/gcr.io/chesspuzzlesolver:${{ github.sha }} \
           --region=us-central1 \
           --platform=managed \
           --project=idyllic-parser-460423-r0
