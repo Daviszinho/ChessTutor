@@ -322,7 +322,7 @@ export default function Home() {
       console.log("Calculated effective user orientation:", effectiveOrientation);
       console.log("User effectively plays as:", userPlaysAs === 'w' ? 'White' : 'Black');
       console.log("isUserTurn set to:", newIsUserTurn);
-      console.log("--- End Reset Log ---");
+      console.log("--- End Reset Log ----");
     }
   };
 
