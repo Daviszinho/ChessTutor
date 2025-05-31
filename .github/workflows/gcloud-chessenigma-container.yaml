@@ -1,3 +1,13 @@
+name: 🚀 Chess Puzzle Solver - Build & Deploy to GCP
+
+# Configuración de los eventos que activan el workflow
+on:
+  push:
+    branches:
+      - main  # Solo se activa en cambios a la rama main
+    paths:
+      - 'ChessPuzzleSolver/**'  # Solo se activa si hay cambios en la carpeta ChessPuzzleSolver
+
 # Configuración de GitHub Actions para construir y desplegar la imagen del contenedor en Google Container Registry
 
 steps:
