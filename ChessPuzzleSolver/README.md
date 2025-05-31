@@ -1,14 +1,16 @@
 # Navigate to your project directory
 cd /home/daviszinho/Documents/ChessTutor/ChessTutor/ChessPuzzleSolver
+sudo docker system prune -a --volumes
 
+sudo docker build -t gcr.io/idyllic-parser-460423-r0/chess-puzzle-solver .
+sudo docker tag gcr.io/idyllic-parser-460423-r0/chess-puzzle-solver gcr.io/idyllic-parser-460423-r0/chess-puzzle-solver:latest
+
+sudo usermod -aG docker $USER
+newgrp docker  # This starts a new shell with the new group
 # Build the Docker image
-docker build -t gcr.io/idyllic-parser-460423-r0/chess-puzzle-solver .
+gcloud auth application-default login
+sudo docker push gcr.io/idyllic-parser-460423-r0/chess-puzzle-solver:latest
 
-gcloud auth login
-gcloud config set project idyllic-parser-460423-r0
-gcloud auth configure-docker
-
-docker push gcr.io/idyllic-parser-460423-r0/chess-puzzle-solver
 
 gcloud run deploy chess-puzzle-solver \
   --image gcr.io/idyllic-parser-460423-r0/chess-puzzle-solver \
