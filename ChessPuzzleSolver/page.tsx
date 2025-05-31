@@ -453,7 +453,6 @@ export default function Home() {
             ? t('footerCopyright', { year: currentYear })
             : t('footerCopyrightNoYear')}
           &copy;
-
         </p>
         <p>{t('footerPoweredBy')}</p>
       </footer>
