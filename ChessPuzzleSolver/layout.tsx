@@ -8,11 +8,8 @@ import { Toaster } from "@/components/ui/toaster";
 import { LocaleProvider, LocaleContext } from '@/context/LocaleContext'; // Import LocaleProvider
 import { useContext, useEffect } from 'react'; // Import useContext and useEffect
 
-
-
 // Metadata cannot be dynamic in client components directly
 // For dynamic titles based on locale, you'd set it in page.tsx's useEffect
-
 
 interface RootLayoutProps {
   children: ReactNode;
