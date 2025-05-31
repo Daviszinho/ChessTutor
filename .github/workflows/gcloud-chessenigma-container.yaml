@@ -38,20 +38,27 @@ jobs:
       with:
         project_id: idyllic-parser-460423-r0
         export_default_credentials: true
-
     - name: Build and push Docker image
       run: |-
-      # Configura el host de Docker para Artifact Registry
-        echo "Configurando Docker para Artifact Registry..."
-        gcloud auth configure-docker us-docker.pkg.dev
-        
-        # Navega al directorio correcto
-        cd ChessPuzzleSolver
-        
-        # Construye la imagen
-        echo "Construyendo la imagen Docker..."
-        docker build -t us-docker.pkg.dev/idyllic-parser-460423-r0/gcr.io/chesspuzzlesolver:${{ github.sha }} .
-        
-        # Sube la imagen
-        echo "Subiendo la imagen a Artifact Registry..."
-        docker push us-docker.pkg.dev/idyllic-parser-460423-r0/gcr.io/chesspuzzlesolver:${{ github.sha }}
+          # Configura el host de Docker para Artifact Registry
+          echo "Configurando Docker para Artifact Registry..."
+          gcloud auth configure-docker us-docker.pkg.dev
+          
+          # Navega al directorio correcto
+          cd ChessPuzzleSolver
+          
+          # Construye la imagen
+          echo "Construyendo la imagen Docker..."
+          docker build -t us-docker.pkg.dev/idyllic-parser-460423-r0/gcr.io/chesspuzzlesolver:${{ github.sha }} .
+          
+          # Sube la imagen
+          echo "Subiendo la imagen a Artifact Registry..."
+          docker push us-docker.pkg.dev/idyllic-parser-460423-r0/gcr.io/chesspuzzlesolver:${{ github.sha }}
+      
+    - name: Deploy to Cloud Run
+      run: |-
+        gcloud run deploy chess-puzzle-solver \
+          --image=us-docker.pkg.dev/idyllic-parser-460423-r0/gcr.io/chesspuzzlesolver:${{ github.sha }} \
+          --region=us-central1 \
+          --platform=managed \
+          --project=idyllic-parser-460423-r0
