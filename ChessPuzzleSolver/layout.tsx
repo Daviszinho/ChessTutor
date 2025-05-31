@@ -59,7 +59,6 @@ function HtmlLangUpdater({ children }: { children: ReactNode }) {
   );
 }
 
-
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <LocaleProvider>
