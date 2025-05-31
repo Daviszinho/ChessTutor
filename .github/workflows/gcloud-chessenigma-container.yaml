@@ -8,81 +8,51 @@ on:
     paths:
       - 'ChessPuzzleSolver/**'  # Solo se activa si hay cambios en la carpeta ChessPuzzleSolver
 
-# Configuración de GitHub Actions para construir y desplegar la imagen del contenedor en Google Container Registry
+# Variables de entorno para el workflow
+env:
+  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+  COMMIT_SHA: ${{ github.sha }}
 
-steps:
-  # Construye la imagen del contenedor con caché
-  - name: 'gcr.io/cloud-builders/docker'
-    id: 'build'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - |
-        # Extrae la última imagen para caché si existe
-        docker pull gcr.io/$PROJECT_ID/chess-puzzle-solver:latest || exit 0
+jobs:
+  build-and-deploy:
+    name: Build and Deploy to GCP
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
         
-        # Construye con caché desde la última imagen
-        docker build \
-          --cache-from gcr.io/$PROJECT_ID/chess-puzzle-solver:latest \
-          --tag gcr.io/$PROJECT_ID/chess-puzzle-solver:$COMMIT_SHA \
-          --tag gcr.io/$PROJECT_ID/chess-puzzle-solver:latest \
-          .
-
-    # Este timeout evita que las construcciones se ejecuten indefinidamente
-    timeout: 1800s
-
-  # Sube la imagen del contenedor con la etiqueta del commit SHA
-  - name: 'gcr.io/cloud-builders/docker'
-    id: 'push-versioned'
-    args: ['push', 'gcr.io/$PROJECT_ID/chess-puzzle-solver:$COMMIT_SHA']
-
-  # Sube la etiqueta 'latest'
-  - name: 'gcr.io/cloud-builders/docker'
-    id: 'push-latest'
-    args: ['push', 'gcr.io/$PROJECT_ID/chess-puzzle-solver:latest']
-
-  # Despliega el contenedor en Cloud Run
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    id: 'deploy'
-    entrypoint: gcloud
-    args:
-      - 'run'
-      - 'deploy'
-      - 'chess-puzzle-solver'
-      - '--image'
-      - 'gcr.io/$PROJECT_ID/chess-puzzle-solver:$COMMIT_SHA'
-      - '--region'
-      - 'us-central1'
-      - '--platform'
-      - 'managed'
-      - '--allow-unauthenticated'
-      - '--port'
-      - '3000'
-      - '--cpu'
-      - '1'
-      - '--memory'
-      - '512Mi'
-      - '--min-instances'
-      - '0'
-      - '--max-instances'
-      - '3'
-      - '--set-env-vars'
-      - 'NODE_ENV=production'
-      - '--timeout'
-      - '300s'
-      - '--concurrency'
-      - '80'
-
-# Almacena imágenes en Container Registry
-images:
-  - 'gcr.io/$PROJECT_ID/chess-puzzle-solver:$COMMIT_SHA'
-  - 'gcr.io/$PROJECT_ID/chess-puzzle-solver:latest'
-
-# Agrega un timeout de construcción (10 minutos)
-timeout: 600s
-
-# Agrega opciones de construcción para una mejor caché
-options:
-  logging: CLOUD_LOGGING_ONLY
-  machineType: E2_HIGHCPU_8  # Construcciones más rápidas con más CPU
-  diskSizeGb: 20  # Aumenta el tamaño del disco para node_modules
+      # Configura las credenciales de Google Cloud
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+          
+      # Configura el SDK de Google Cloud
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+        
+      # Construye la imagen del contenedor con caché
+      - name: Build and Push to Google Container Registry
+        id: build
+        uses: 'google-github-actions/build-push-container@v2'
+        with:
+          dockerfile: 'ChessPuzzleSolver/Dockerfile'
+          tags: |
+            gcr.io/${{ env.PROJECT_ID }}/chess-puzzle-solver:latest
+            gcr.io/${{ env.PROJECT_ID }}/chess-puzzle-solver:${{ env.COMMIT_SHA }}
+          push: true
+          
+      # Despliega en Cloud Run
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy chess-puzzle-solver \
+            --image gcr.io/${{ env.PROJECT_ID }}/chess-puzzle-solver:${{ env.COMMIT_SHA }} \
+            --platform managed \
+            --region us-central1 \
+            --cpu 1 \
+            --memory 512Mi \
+            --port 3000 \
+            --allow-unauthenticated \
+            --timeout 30s
