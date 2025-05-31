@@ -32,17 +32,26 @@ jobs:
       # Configura el SDK de Google Cloud
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v1
-        
-      # Construye la imagen del contenedor con caché
-      - name: Build and Push to Google Container Registry
-        id: build
-        uses: 'google-github-actions/build-push-container@v2'
         with:
-          dockerfile: 'ChessPuzzleSolver/Dockerfile'
-          tags: |
-            gcr.io/${{ env.PROJECT_ID }}/chess-puzzle-solver:latest
-            gcr.io/${{ env.PROJECT_ID }}/chess-puzzle-solver:${{ env.COMMIT_SHA }}
-          push: true
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          
+      # Construye la imagen de Docker
+      - name: Build Docker image
+        run: |
+          docker build \
+            -t gcr.io/${{ env.PROJECT_ID }}/chess-puzzle-solver:${{ env.COMMIT_SHA }} \
+            -t gcr.io/${{ env.PROJECT_ID }}/chess-puzzle-solver:latest \
+            ./ChessPuzzleSolver
+            
+      # Autentica en Google Container Registry
+      - name: Configure Docker for GCR
+        run: gcloud auth configure-docker --quiet
+        
+      # Sube la imagen a GCR
+      - name: Push Docker image
+        run: |
+          docker push gcr.io/${{ env.PROJECT_ID }}/chess-puzzle-solver:${{ env.COMMIT_SHA }}
+          docker push gcr.io/${{ env.PROJECT_ID }}/chess-puzzle-solver:latest
           
       # Despliega en Cloud Run
       - name: Deploy to Cloud Run
@@ -55,4 +64,5 @@ jobs:
             --memory 512Mi \
             --port 3000 \
             --allow-unauthenticated \
-            --timeout 30s
+            --timeout 30s \
+            --quiet

@@ -12,12 +12,7 @@ import { useContext, useEffect } from 'react'; // Import useContext and useEffec
 
 // Metadata cannot be dynamic in client components directly
 // For dynamic titles based on locale, you'd set it in page.tsx's useEffect
-/*
-export const metadata: Metadata = {
-  title: 'ChessEnigma', // This will be overridden if set dynamically
-  description: 'Solve chess puzzles and sharpen your mind.',
-};
-*/
+
 
 interface RootLayoutProps {
   children: ReactNode;
