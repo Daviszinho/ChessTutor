@@ -390,7 +390,6 @@ export default function Home() {
             )}
           </CardContent>
         </Card>
-
         <div className="w-full lg:w-1/3 space-y-4">
           <Card className="shadow-lg">
             <CardHeader>

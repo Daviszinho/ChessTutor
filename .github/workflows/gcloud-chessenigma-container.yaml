@@ -29,6 +29,8 @@ jobs:
         service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
         project_id: ${{ env.PROJECT_ID }}
         create_credentials_file: true
+        audience: https://token.actions.githubusercontent.com  # Añade esta línea
+
     
     - name: Set up Cloud SDK
       uses: google-github-actions/setup-gcloud@v1
