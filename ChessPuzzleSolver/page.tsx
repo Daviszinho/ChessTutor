@@ -450,7 +450,6 @@ export default function Home() {
           </Card>
         </div>
       </main>
-
       <footer className="mt-auto pt-10 pb-4 text-center text-sm text-muted-foreground">
         <p>
           {currentYear !== null
