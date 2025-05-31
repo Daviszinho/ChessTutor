@@ -8,17 +8,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { LocaleProvider, LocaleContext } from '@/context/LocaleContext'; // Import LocaleProvider
 import { useContext, useEffect } from 'react'; // Import useContext and useEffect
 
-/* // Temporarily commented out
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
-});
 
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
-});
-*/
 
 // Metadata cannot be dynamic in client components directly
 // For dynamic titles based on locale, you'd set it in page.tsx's useEffect
