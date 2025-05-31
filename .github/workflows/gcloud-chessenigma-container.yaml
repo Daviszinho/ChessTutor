@@ -1,80 +1,51 @@
-name: 🚀 Chess Puzzle Solver - Build & Deploy to GCP
+name: 🚀 Chess Puzzle Solver - Deploy to Cloud Run
 
-# Configuración de los eventos que activan el workflow
 on:
   push:
-    branches:
-      - main  # Solo se activa en cambios a la rama main
+    branches: [main]
     paths:
-      - 'ChessPuzzleSolver/**'  # Solo se activa si hay cambios en la carpeta ChessPuzzleSolver
+      - 'ChessPuzzleSolver/**'
 
-# Variables de entorno para el workflow
 env:
-  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  PROJECT_ID: idyllic-parser-460423-r0
   WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
   SERVICE_ACCOUNT: ${{ secrets.GCP_SERVICE_ACCOUNT }}
-  COMMIT_SHA: ${{ github.sha }}
-  GITHUB_REF: ${{ github.ref }}
-
-defaults:
-  run:
-    shell: bash
 
 permissions:
   contents: 'read'
   id-token: 'write'
 
 jobs:
-  build-and-deploy:
-    name: Build and Deploy to GCP
+  deploy:
     runs-on: ubuntu-latest
-    
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-        
-      # Configura las credenciales de Google Cloud usando Workload Identity
-      - name: Authenticate to Google Cloud
-        id: auth
-        uses: google-github-actions/auth@v1
-        with:
-          workload_identity_provider: ${{ env.WORKLOAD_IDENTITY_PROVIDER }}
-          service_account: ${{ env.SERVICE_ACCOUNT }}
-          
-      # Configura el SDK de Google Cloud
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v1
-        with:
-          project_id: ${{ env.PROJECT_ID }}
-          
-      # Construye la imagen de Docker
-      - name: Build Docker image
-        run: |
-          docker build \
-            -t gcr.io/${{ env.PROJECT_ID }}/chess-puzzle-solver:${{ env.COMMIT_SHA }} \
-            -t gcr.io/${{ env.PROJECT_ID }}/chess-puzzle-solver:latest \
-            ./ChessPuzzleSolver
-            
-      # Configura Docker para usar gcloud como auxiliar de credenciales
-      - name: Set up Docker
-        run: gcloud auth configure-docker --quiet
-        
-      # Sube la imagen a GCR
-      - name: Push Docker image
-        run: |
-          docker push gcr.io/${{ env.PROJECT_ID }}/chess-puzzle-solver:${{ env.COMMIT_SHA }}
-          docker push gcr.io/${{ env.PROJECT_ID }}/chess-puzzle-solver:latest
-          
-      # Despliega en Cloud Run
-      - name: Deploy to Cloud Run
-        run: |
-          gcloud run deploy chess-puzzle-solver \
-            --image gcr.io/${{ env.PROJECT_ID }}/chess-puzzle-solver:${{ env.COMMIT_SHA }} \
-            --platform managed \
-            --region us-central1 \
-            --cpu 1 \
-            --memory 512Mi \
-            --port 3000 \
-            --allow-unauthenticated \
-            --timeout 30s \
-            --quiet
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Authenticate to Google Cloud
+      uses: google-github-actions/auth@v1
+      with:
+        workload_identity_provider: ${{ env.WORKLOAD_IDENTITY_PROVIDER }}
+        service_account: ${{ env.SERVICE_ACCOUNT }}
+
+    - name: Set up Cloud SDK
+      uses: google-github-actions/setup-gcloud@v1
+      with:
+        project_id: ${{ env.PROJECT_ID }}
+
+    - name: Build and push Docker image
+      run: |-
+        docker build -t gcr.io/$PROJECT_ID/chess-puzzle-solver:$GITHUB_SHA ./ChessPuzzleSolver
+        docker push gcr.io/$PROJECT_ID/chess-puzzle-solver:$GITHUB_SHA
+
+    - name: Deploy to Cloud Run
+      run: |-
+        gcloud run deploy chess-puzzle-solver \
+          --image gcr.io/$PROJECT_ID/chess-puzzle-solver:$GITHUB_SHA \
+          --platform managed \
+          --region us-central1 \
+          --cpu 1 \
+          --memory 512Mi \
+          --port 3000 \
+          --allow-unauthenticated \
+          --timeout 30s
