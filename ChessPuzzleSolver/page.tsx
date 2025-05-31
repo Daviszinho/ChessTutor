@@ -454,7 +454,7 @@ export default function Home() {
       <footer className="mt-auto pt-10 pb-4 text-center text-sm text-muted-foreground">
         <p>   
           {currentYear !== null
-            ? t('footerCopyright', { year: currentYear })  
+            ? t('footerCopyright', { year: currentYear })
             : t('footerCopyrightNoYear')}
         </p>
         <p>{t('footerPoweredBy')}</p>
