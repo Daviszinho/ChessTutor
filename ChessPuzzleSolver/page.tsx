@@ -452,6 +452,8 @@ export default function Home() {
           {currentYear !== null
             ? t('footerCopyright', { year: currentYear })
             : t('footerCopyrightNoYear')}
+          &copy; 2025 - ChessEnigma - Desarrollado por Davis Penaranda Zarate - v1.0.9 
+
         </p>
         <p>{t('footerPoweredBy')}</p>
       </footer>
