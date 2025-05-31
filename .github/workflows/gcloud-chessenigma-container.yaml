@@ -25,15 +25,16 @@ jobs:
     - name: Authenticate to Google Cloud
       uses: google-github-actions/auth@v1
       with:
-        workload_identity_provider: ${{ env.WORKLOAD_IDENTITY_PROVIDER }}
-        service_account: ${{ env.SERVICE_ACCOUNT }}
-        project_id: ${{ env.PROJECT_ID }}  # Añade esta línea
-
-
+        workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
+        service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+        project_id: ${{ env.PROJECT_ID }}
+        create_credentials_file: true
+    
     - name: Set up Cloud SDK
       uses: google-github-actions/setup-gcloud@v1
       with:
         project_id: ${{ env.PROJECT_ID }}
+        export_default_credentials: true
 
     - name: Build and push Docker image
       run: |-

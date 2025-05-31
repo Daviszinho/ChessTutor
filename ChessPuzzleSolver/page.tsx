@@ -427,7 +427,6 @@ export default function Home() {
               </div>
             </CardContent>
           </Card>
-
           <Card className="shadow-lg">
             <CardHeader>
               <CardTitle className="text-2xl text-primary">{t('moveHistoryTitle')}</CardTitle>
