@@ -11,8 +11,18 @@ on:
 # Variables de entorno para el workflow
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-  GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+  WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
+  SERVICE_ACCOUNT: ${{ secrets.GCP_SERVICE_ACCOUNT }}
   COMMIT_SHA: ${{ github.sha }}
+  GITHUB_REF: ${{ github.ref }}
+
+defaults:
+  run:
+    shell: bash
+
+permissions:
+  contents: 'read'
+  id-token: 'write'
 
 jobs:
   build-and-deploy:
@@ -23,17 +33,19 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
         
-      # Configura las credenciales de Google Cloud
+      # Configura las credenciales de Google Cloud usando Workload Identity
       - name: Authenticate to Google Cloud
+        id: auth
         uses: google-github-actions/auth@v1
         with:
-          credentials_json: ${{ secrets.GCP_SA_KEY }}
+          workload_identity_provider: ${{ env.WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ env.SERVICE_ACCOUNT }}
           
       # Configura el SDK de Google Cloud
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v1
         with:
-          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          project_id: ${{ env.PROJECT_ID }}
           
       # Construye la imagen de Docker
       - name: Build Docker image
@@ -43,8 +55,8 @@ jobs:
             -t gcr.io/${{ env.PROJECT_ID }}/chess-puzzle-solver:latest \
             ./ChessPuzzleSolver
             
-      # Autentica en Google Container Registry
-      - name: Configure Docker for GCR
+      # Configura Docker para usar gcloud como auxiliar de credenciales
+      - name: Set up Docker
         run: gcloud auth configure-docker --quiet
         
       # Sube la imagen a GCR
