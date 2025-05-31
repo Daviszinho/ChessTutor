@@ -314,7 +314,7 @@ export default function Home() {
       }
       setIsUserTurn(newIsUserTurn);
       
-      console.log("--- Puzzle Reset ----");
+      console.log("--- Puzzle Reset ---");
       console.log("Original Puzzle Data:", JSON.stringify(puzzle));
       console.log("FEN indicates turn for:", initialGameTurn === 'w' ? 'White' : 'Black');
       console.log("Data source orientation:", puzzle.orientation);
