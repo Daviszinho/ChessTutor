@@ -8,7 +8,6 @@ on:
   workflow_dispatch:
 
 env:
-  AZURE_CONTAINER_REGISTRY: "chesstutordockercontainerregistry"  # Replace with your ACR name
   CONTAINER_NAME: "chess-tutor"
   RESOURCE_GROUP: "LinuxDockerResourceGroup"  # Replace with your resource group name
   WEBAPP_NAME: "ChessTutorDockerApp"  # Web app name in Azure
@@ -27,23 +26,16 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    - name: Log in to ACR
-      uses: azure/docker-login@v1
-      with:
-        login-server: ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io
-        username: ${{ secrets.ACR_USERNAME }}
-        password: ${{ secrets.ACR_PASSWORD }}
-
-    - name: Build and push container image
+    - name: Build container image
       uses: docker/build-push-action@v4
       with:
         context: ./Tutorial
-        push: true
-        tags: ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.CONTAINER_NAME }}:${{ github.sha }}
+        push: false
+        tags: ${{ env.CONTAINER_NAME }}:${{ github.sha }}
         file: ./Tutorial/Dockerfile
 
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
       with:
         app-name: ${{ env.WEBAPP_NAME }}
-        images: ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.CONTAINER_NAME }}:${{ github.sha }}
+        images: ${{ env.CONTAINER_NAME }}:${{ github.sha }}
