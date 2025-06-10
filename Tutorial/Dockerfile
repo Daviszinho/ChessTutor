@@ -24,7 +24,7 @@ COPY --from=build /app/out .
 COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/wwwroot ./wwwroot
 ENV ASPNETCORE_URLS=http://+:80
-EXPOSE 8080
+EXPOSE 8085
 EXPOSE 80
 EXPOSE 443
 ENTRYPOINT ["dotnet", "ChessTutorWeb.dll"]
