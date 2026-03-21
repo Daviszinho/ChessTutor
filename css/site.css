@@ -1,43 +1,228 @@
+:root {
+    --primary-color: #2c3e50;
+    --secondary-color: #3498db;
+    --accent-color: #e74c3c;
+    --light-color: #ecf0f1;
+    --dark-color: #2c3e50;
+    --chess-gold: #f1c40f;
+    --transition-speed: 0.3s;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 html {
-  font-size: 14px;
+    font-size: 14px;
+    scroll-behavior: smooth;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
+    html {
+        font-size: 16px;
+    }
 }
 
 body {
-  margin-bottom: 60px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f8f9fa;
+    margin-bottom: 60px;
+    min-height: 100vh;
+    position: relative;
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+/* Navbar moderno - Negro sólido sin scroll horizontal */
+.navbar {
+    background: #1a1a1a !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    transition: all var(--transition-speed) ease;
+    padding: 0.4rem 1rem;
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+.navbar-dark .navbar-brand {
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: white !important;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 0.25rem 0;
 }
 
+.navbar-dark .nav-link {
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-weight: 500;
+    padding: 0.25rem 0.5rem !important;
+    font-size: 0.9rem;
+    transition: all var(--transition-speed) ease;
+}
+
+.navbar-dark .nav-link:hover,
+.navbar-dark .nav-link.active {
+    color: white !important;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+.navbar-dark .navbar-toggler {
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.navbar-dark .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.9%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+.nav-link {
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-weight: 500;
+    padding: 0.5rem 1rem !important;
+    margin: 0 0.1rem;
+    border-radius: 4px;
+    transition: all var(--transition-speed) ease;
+    position: relative;
+}
+
+.nav-link:hover {
+    color: white !important;
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+.nav-link.active {
+    color: white !important;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Botones mejorados */
+.btn {
+    border-radius: 8px;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    transition: all var(--transition-speed) ease;
+    border: none;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+}
+
+.btn-warning {
+    background: linear-gradient(135deg, var(--chess-gold) 0%, #f39c12 100%);
+    color: var(--dark-color);
+}
+
+.btn-warning:hover {
+    background: linear-gradient(135deg, #f39c12 0%, var(--chess-gold) 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* Hero section mejorado */
+.hero {
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                url('https://images.unsplash.com/photo-1529699211952-734e80c4d42b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: white;
+    padding: 120px 20px;
+    text-align: center;
+    margin-bottom: 2rem;
+    border-radius: 0 0 20px 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.hero h1 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    margin-bottom: 1.5rem;
+    animation: fadeInUp 1s ease;
+}
+
+.hero p {
+    font-size: 1.3rem;
+    font-weight: 300;
+    margin-bottom: 2rem;
+    animation: fadeInUp 1s ease 0.2s;
+    animation-fill-mode: both;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Secciones */
+.section-icon {
+    font-size: 50px;
+    color: var(--chess-gold);
+    margin-bottom: 1rem;
+    transition: transform var(--transition-speed) ease;
+}
+
+.section-icon:hover {
+    transform: scale(1.1) rotate(5deg);
+}
+
+/* Sección de aprendizaje - textos sin corte */
+#learn .col-md-3 {
+    overflow: visible;
+    height: auto;
+    min-height: 200px;
+}
+
+#learn h4 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+#learn p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    overflow: visible;
+    text-overflow: clip;
+    white-space: normal;
+}
+
+/* Tableros de ajedrez */
+.board-container {
+    width: 400px;
+    max-width: 100%;
+    margin: 2rem auto;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    transition: transform var(--transition-speed) ease;
+}
+
+.board-container:hover {
+    transform: translateY(-5px);
+}
+
+/* Contenedor de puzzles */
 .chess-puzzle-container {
     position: relative;
     width: 100%;
     padding-bottom: 75%;
     height: 700px;
     overflow: hidden;
-    margin: 0 auto;
-    background: #f8f9fa;
+    margin: 2rem auto;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
 }
 
 .chess-puzzle-container iframe {
@@ -48,6 +233,7 @@ body {
     height: 100%;
     border: 0;
     display: block;
+    border-radius: 15px;
 }
 
 @media (min-width: 768px) {
@@ -63,34 +249,238 @@ body {
     }
 }
 
-.hero {
-    background-image: url('https://www.chessbazaar.com/blog/wp-content/uploads/2017/08/dsc0352_copy_3_1.jpg');
-    background-size: cover;
-    background-position: center;
+/* Cards de características */
+.card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    transition: all var(--transition-speed) ease;
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+}
+
+.card-header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
     color: white;
-    padding: 100px 20px;
-    text-align: center;
+    border-bottom: none;
 }
 
-.section-icon {
-    font-size: 40px;
-    color: gold;
-}
-
-.navbar-brand {
-    font-weight: bold;
-}
-
+/* Footer - Negro sólido */
 .footer {
     position: absolute;
     bottom: 0;
     width: 100%;
-    padding: 20px 0;
+    padding: 1.5rem 0;
     text-align: center;
+    background: #1a1a1a !important;
+    color: white !important;
+    font-size: 0.9rem;
+    border: none !important;
+    border-top: none !important;
 }
 
-.board-container {
-    width: 400px;
+.footer.border-top {
+    border-top: none !important;
+}
+
+.footer.text-muted {
+    color: white !important;
+}
+
+.footer.text-muted .container {
+    color: white !important;
+}
+
+.footer a {
+    color: #f1c40f;
+    text-decoration: none;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
+
+/* Tablas */
+.table {
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+.table thead {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white;
+}
+
+/* Formularios */
+.form-control, .form-select {
+    border-radius: 8px;
+    border: 2px solid #e0e0e0;
+    padding: 0.75rem 1rem;
+    transition: all var(--transition-speed) ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+}
+
+/* Utilidades */
+.text-gradient {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.shadow-soft {
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+.shadow-hard {
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+/* Animaciones */
+.fade-in {
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.slide-up {
+    animation: slideUp 0.5s ease;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hero {
+        padding: 80px 15px;
+    }
+    
+    .hero h1 {
+        font-size: 2.5rem;
+    }
+    
+    .hero p {
+        font-size: 1.1rem;
+    }
+    
+    .navbar-brand {
+        font-size: 1.2rem;
+    }
+    
+    .nav-link {
+        padding: 0.4rem 0.8rem !important;
+        font-size: 0.9rem;
+    }
+}
+
+/* Modo oscuro (opcional) */
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #1a1a1a;
+        color: #e0e0e0;
+    }
+    
+    .navbar {
+        background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%) !important;
+    }
+    
+    .card {
+        background: #2d2d2d;
+        color: #e0e0e0;
+    }
+    
+    .table {
+        background: #2d2d2d;
+        color: #e0e0e0;
+    }
+    
+    .table thead {
+        background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    }
+}
+
+/* Performance optimizations */
+img {
     max-width: 100%;
-    margin: 0 auto;
+    height: auto;
+}
+
+/* Critical resource hints */
+link[rel="preload"] {
+    font-display: swap;
+}
+
+/* Reduce layout shifts */
+.board-container,
+.chess-puzzle-container {
+    contain: layout style paint;
+}
+
+/* Optimize animations */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Image optimization */
+.gif-container {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+.gif-container img {
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Lazy loading placeholder */
+img[loading="lazy"] {
+    background-color: #f8f9fa;
+    background-image: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* Service worker registration placeholder */
+.sw-registration {
+    display: none;
+}
+
+/* Cache control for static assets */
+.cache-control {
+    cache-control: public, max-age=31536000;
 }

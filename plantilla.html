@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plantilla - ChessTutor</title>
+    <meta name="description" content="Página de ejemplo usando componentes reutilizables">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+    <div id="navbar-container"></div>
+    
+    <div class="container">
+        <main role="main" class="pb-3">
+            <div class="text-center mb-5">
+                <h1 class="display-4 fw-bold text-gradient">Página de Ejemplo</h1>
+                <p class="lead">Usando componentes reutilizables</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="card shadow-soft">
+                        <div class="card-header">
+                            <h3 class="card-title mb-0">🎯 Componente de Tarjeta</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>Este es un ejemplo de tarjeta reutilizable. Los componentes hacen que el desarrollo sea más rápido y consistente.</p>
+                            <button class="btn btn-primary" onclick="showAlert()">Mostrar Alerta</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="card shadow-soft">
+                        <div class="card-header">
+                            <h3 class="card-title mb-0">📊 Características</h3>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">Navbar reutilizable</li>
+                                <li class="list-group-item">Footer dinámico</li>
+                                <li class="list-group-item">Tarjetas consistentes</li>
+                                <li class="list-group-item">Alertas estandarizadas</li>
+                                <li class="list-group-item">Spinners de carga</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="alert-container" class="mt-4"></div>
+        </main>
+    </div>
+    
+    <div id="footer-container"></div>
+
+    <script src="https://code.jquery.com/jquery-4.0.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/components.js"></script>
+    
+    <script>
+        $(document).ready(function() {
+            // Load components
+            $('#navbar-container').html(loadNavbar('plantilla'));
+            $('#footer-container').html(loadFooter());
+        });
+        
+        function showAlert() {
+            const alertMessage = '¡Esta es una alerta dinámica creada con componentes reutilizables!';
+            $('#alert-container').html(loadAlert(alertMessage, 'success', true));
+            
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                $('#alert-container').fadeOut();
+            }, 5000);
+        }
+    </script>
+</body>
+</html>

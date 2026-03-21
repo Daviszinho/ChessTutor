@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estrategia Básica - ChessTutor</title>
+    <meta name="description" content="Aprende los fundamentos de la estrategia en ajedrez: control del centro, desarrollo de piezas, seguridad del rey y más.">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css">
+    <link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="index.html">ChessTutor</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link " href="index.html">Inicio</a></li>
+                        <li class="nav-item"><a class="nav-link " href="inicio.html">Piezas</a></li>
+                        <li class="nav-item"><a class="nav-link " href="movimiento.html">Movimiento</a></li>
+                        <li class="nav-item"><a class="nav-link " href="capturar.html">Capturar</a></li>
+                        <li class="nav-item"><a class="nav-link " href="extraordinarios.html">Extraordinarios</a></li>
+                        <li class="nav-item"><a class="nav-link " href="ritmo.html">Ritmo</a></li>
+                        <li class="nav-item"><a class="nav-link " href="nomenclatura.html">Nomenclatura</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="estrategia.html">Estrategia</a></li>
+                        <li class="nav-item"><a class="nav-link " href="ejercicios.html">Chess Enigma</a></li>
+                        <li class="nav-item"><a class="nav-link " href="ecoviewer.html">ECO Viewer</a></li>
+                        <li class="nav-item"><a class="nav-link " href="jugar.html">ChessAI</a></li>
+                    </ul>
+
+                </div>
+            </div>
+        </nav>
+    </header>
+    
+    <div class="container">
+        <main role="main" class="pb-3">
+            <div class="text-center mb-5">
+                <h1 class="display-4 fw-bold text-gradient">Estrategia Básica</h1>
+                <p class="lead">Aprende los fundamentos para jugar mejor ajedrez</p>
+            </div>
+            
+            <div class="row g-4">
+                <!-- Control del Centro -->
+                <div class="col-md-6">
+                    <div class="card shadow-soft h-100">
+                        <div class="card-header">
+                            <h3 class="card-title mb-0">🎯 Control del Centro</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>El centro del tablero (casillas d4, d5, e4, e5) es la zona más importante. Controlar el centro te da:</p>
+                            <ul>
+                                <li>Mayor movilidad para tus piezas</li>
+                                <li>Más opciones de ataque</li>
+                                <li>Capacidad de dirigir el juego</li>
+                            </ul>
+                            <div class="gif-container text-center my-3">
+                                <img src="img/inicio.gif" alt="Control del centro" class="img-fluid" loading="lazy">
+                            </div>
+                            <div class="alert alert-info">
+                                <strong>Consejo:</strong> En las primeras jugadas, busca controlar el centro con peones y desarrollar piezas hacia el centro.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Desarrollo de Piezas -->
+                <div class="col-md-6">
+                    <div class="card shadow-soft h-100">
+                        <div class="card-header">
+                            <h3 class="card-title mb-0">♟️ Desarrollo de Piezas</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>Desarrollar piezas significa sacarlas de sus posiciones iniciales a posiciones activas:</p>
+                            <ol>
+                                <li><strong>Primero caballos y alfiles:</strong> Son piezas menores que se desarrollan primero</li>
+                                <li><strong>Luego la dama:</strong> No la muevas muy temprano</li>
+                                <li><strong>Finalmente enrocar:</strong> Para proteger el rey</li>
+                            </ol>
+                            <div class="alert alert-warning">
+                                <strong>Error común:</strong> No muevas la misma pieza dos veces en la apertura, a menos que sea necesario.
+                            </div>
+                            <p><strong>Regla de oro:</strong> Cada pieza desarrollada = +1 punto de ventaja.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Seguridad del Rey -->
+                <div class="col-md-6">
+                    <div class="card shadow-soft h-100">
+                        <div class="card-header">
+                            <h3 class="card-title mb-0">👑 Seguridad del Rey</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>La seguridad del rey es paramount. Sigue estos principios:</p>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h5>✅ Buenas prácticas:</h5>
+                                    <ul>
+                                        <li>Enrocar temprano</li>
+                                        <li>Mantener peones cerca del rey</li>
+                                        <li>No mover peones delante del rey innecesariamente</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <h5>❌ Errores a evitar:</h5>
+                                    <ul>
+                                        <li>Enrocar hacia un flanco débil</li>
+                                        <li>Mover peones delante del rey</li>
+                                        <li>Dejar el rey en el centro</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="gif-container text-center my-3">
+                                <img src="img/enroque.gif" alt="Enroque" class="img-fluid" loading="lazy">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Estructura de Peones -->
+                <div class="col-md-6">
+                    <div class="card shadow-soft h-100">
+                        <div class="card-header">
+                            <h3 class="card-title mb-0">🏃 Estructura de Peones</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>La estructura de peones determina el carácter del juego:</p>
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Tipo</th>
+                                            <th>Descripción</th>
+                                            <th>Efecto</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Peón pasado</td>
+                                            <td>Peón sin oponentes en su columna</td>
+                                            <td>✅ Ventaja</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Peón doblado</td>
+                                            <td>Dos peones en la misma columna</td>
+                                            <td>❌ Debilidad</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Peón aislado</td>
+                                            <td>Peón sin peones amigados en columnas adyacentes</td>
+                                            <td>⚠️ Mixto</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Peón connected</td>
+                                            <td>Peones que se protegen mutuamente</td>
+                                            <td>✅ Fortaleza</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Valor de las Piezas -->
+                <div class="col-md-6">
+                    <div class="card shadow-soft h-100">
+                        <div class="card-header">
+                            <h3 class="card-title mb-0">⚖️ Valor de las Piezas</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>Conoce el valor relativo de cada pieza para tomar mejores decisiones:</p>
+                            <div class="row text-center">
+                                <div class="col-4">
+                                    <div class="display-6">♟️</div>
+                                    <div class="fw-bold">Peón</div>
+                                    <div class="badge bg-secondary">1 punto</div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="display-6">♞</div>
+                                    <div class="fw-bold">Caballo</div>
+                                    <div class="badge bg-secondary">3 puntos</div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="display-6">♝</div>
+                                    <div class="fw-bold">Alfil</div>
+                                    <div class="badge bg-secondary">3 puntos</div>
+                                </div>
+                                <div class="col-4 mt-3">
+                                    <div class="display-6">♜</div>
+                                    <div class="fw-bold">Torre</div>
+                                    <div class="badge bg-secondary">5 puntos</div>
+                                </div>
+                                <div class="col-4 mt-3">
+                                    <div class="display-6">♛</div>
+                                    <div class="fw-bold">Dama</div>
+                                    <div class="badge bg-secondary">9 puntos</div>
+                                </div>
+                                <div class="col-4 mt-3">
+                                    <div class="display-6">♚</div>
+                                    <div class="fw-bold">Rey</div>
+                                    <div class="badge bg-secondary">∞</div>
+                                </div>
+                            </div>
+                            <div class="alert alert-success mt-3">
+                                <strong>Regla práctica:</strong> Intercambia piezas de igual valor a menos que tengas una razón táctica.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Plan de Juego -->
+                <div class="col-md-6">
+                    <div class="card shadow-soft h-100">
+                        <div class="card-header">
+                            <h3 class="card-title mb-0">🎯 Plan de Juego</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>Todo gran jugador tiene un plan. Sigue estos pasos:</p>
+                            <ol class="list-group list-group-numbered">
+                                <li class="list-group-item">
+                                    <strong>Evalúa la posición:</strong> ¿Quién tiene la ventaja? ¿Por qué?
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Identifica debilidades:</strong> ¿Dónde están las casillas débiles?
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Crea un plan:</strong> Ataca las debilidades, mejora tus piezas
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Ejecuta:</strong> Realiza jugadas que contribuyan a tu plan
+                                </li>
+                            </ol>
+                            <div class="alert alert-primary mt-3">
+                                <strong>Consejo de maestro:</strong> "Antes de hacer una jugada, pregúntate: ¿Qué quiere hacer mi oponente?"
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Ejercicio interactivo -->
+            <div class="row mt-5">
+                <div class="col-12">
+                    <div class="card shadow-soft">
+                        <div class="card-header">
+                            <h3 class="card-title mb-0">🧠 Ejercicio: Evalúa la Posición</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p>Mira esta posición. ¿Qué bando tiene la ventaja y por qué?</p>
+                                    <div id="ejemploEstrategia" style="width: 400px; margin: 0 auto;"></div>
+                                </div>
+                                <div class="col-md-6">
+                                    <h5>Puntos a considerar:</h5>
+                                    <ul>
+                                        <li>¿Quién controla el centro?</li>
+                                        <li>¿Qué piezas están desarrolladas?</li>
+                                        <li>¿Están los reyes seguros?</li>
+                                        <li>¿Cuál es la estructura de peones?</li>
+                                    </ul>
+                                    <button class="btn btn-primary" onclick="showSolution()">Mostrar Respuesta</button>
+                                    <div id="solucion" class="alert alert-success mt-3" style="display: none;">
+                                        <strong>Solución:</strong> Las blancas tienen ligera ventaja porque controlan el centro, tienen piezas más desarrolladas y el rey negro está más expuesto.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container"><br>
+            &copy; <span class="footer-year">2025</span> - ChessTutor - Desarrollado por Davis Penaranda Zarate - v2.0.0
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-4.0.0.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" defer></script>
+    <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/1.4.0/chess.js" defer></script>
+    <script src="js/chessboard-1.0.0.js" defer></script>
+    <script src="js/site.js" defer></script>
+    
+    <script>
+        $(document).ready(function() {
+            // Initialize the strategic position example
+            if (document.getElementById('ejemploEstrategia')) {
+                var board = Chessboard('ejemploEstrategia', {
+                    position: 'r1bqkb1r/pppp1ppp/2n2n2/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4',
+                    pieceTheme: 'js/img/chesspieces/wikipedia/{piece}.png'
+                });
+            }
+        });
+        
+        function showSolution() {
+            document.getElementById('solucion').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
