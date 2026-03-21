@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capturar piezas - ChessTutor</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css">
+    <link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="index.html">ChessTutor</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between" id="navbarNav">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item"><a class="nav-link text-dark" href="index.html">Inicio</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="inicio.html">Piezas</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="movimiento.html">Movimiento</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="capturar.html">Capturar</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="extraordinarios.html">Extraordinarios</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="ritmo.html">Ritmo</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="nomeclatura.html">Nomeclatura</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="aperturas.html">Aperturas</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="ejercicios.html">Chess Enigma</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="historia.html">Historia</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="jugar.html">Jugar contra IA</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    
+    <div class="container">
+        <main role="main" class="pb-3">
+            <h1>Capturar las piezas adversarias</h1>
+
+            <h2>Reglas generales para "Comer"</h2>
+            <p><font size="5">L</font>as piezas capturan las piezas adversarias en relaci&oacute;n con su propio movimiento (excepto el pe&oacute;n), es decir,
+            ataca las casillas donde pueda moverse, y puede capturar cualquier pieza adversaria que se encuentre all&iacute;.
+            En el momento en que se capture a una pieza, esta debe ser retirada inmediatamente del tablero mientras que la pieza
+            ganadora debe ocupar la casilla por la pieza capturada.</p>
+
+            <h3>El rey</h3>
+            <center><img src="img/comerey.gif" alt="Cómo captura el rey?" border="1" width="323" height="323"></center>
+            <center><div id='ejemploCapRey' style='width: 400px'></div></center>
+
+            <h3>La Dama</h3>
+            <center><img src="img/comerdama.gif" alt="Cómo captura la dama?" border="1" width="323" height="323"></center>
+            <center><div id='ejemploCapDama' style='width: 400px'></div></center>
+
+            <h3>La Torre</h3>
+            <center><img src="img/comertorre.gif" alt="Cómo captura la torre?" border="1" width="323" height="323"></center>
+            <center><div id='ejemploCapTorre' style='width: 400px'></div></center>
+
+            <h3>El Alfil</h3>
+            <center><img src="img/comeralfil.gif" alt="Cómo captura el alfil?" border="1" width="323" height="323"></center>
+            <center><div id='ejemploCapAlfil' style='width: 400px'></div></center>
+
+            <h3>El Caballo</h3>
+            <center><img src="img/comercaballo.gif" alt="Cómo captura el caballo?" border="1" width="323" height="323"></center>
+            <center><div id='ejemploCapCaballo' style='width: 400px'></div></center>
+
+            <h3>El Pe&oacute;n</h3>
+            <center><img src="img/comerpeon.gif" alt="Cómo captura el pe&oacute;n?" border="1" width="323" height="323"></center>
+            <center><div id='ejemploCapPeon' style='width: 400px'></div></center>
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container"><br>
+            &copy; 2025 - ChessTutor - Desarrollado por Davis Penaranda Zarate - v2.0.0
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-4.0.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/1.4.0/chess.js"></script>
+    <script src="js/chessboard-1.0.0.js"></script>
+    <script src="js/site.js"></script>
+</body>
+</html>

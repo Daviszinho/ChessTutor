@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movimientos extraordinarios - ChessTutor</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css">
+    <link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="index.html">ChessTutor</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between" id="navbarNav">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item"><a class="nav-link text-dark" href="index.html">Inicio</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="inicio.html">Piezas</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="movimiento.html">Movimiento</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="capturar.html">Capturar</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="extraordinarios.html">Extraordinarios</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="ritmo.html">Ritmo</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="nomeclatura.html">Nomeclatura</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="aperturas.html">Aperturas</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="ejercicios.html">Chess Enigma</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="historia.html">Historia</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="jugar.html">Jugar contra IA</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    
+    <div class="container">
+        <main role="main" class="pb-3">
+            <h1>Movimientos extraordinarios</h1>
+
+            <h2>Enroque</h2>
+            <p><font size="5">E</font>l enroque es un movimiento extraordinario del ajedrez, el cual, solamente se puede realizar
+            en una sola ocasi&oacute;n durante toda la partida. Consiste en un movimiento simult&aacute;neo de posiciones entre el rey y la torre.
+            El rey avanza dos casillas en direcci&oacute;n hacia la torre con la que se enrocar&aacute; y la torre se coloca a la par del rey saltando sobre &eacute;l.</p>
+            
+            <h3>Reglas del enroque</h3>
+            <ul>
+                <li>El rey no debi&oacute; ser movido anteriormente (debe estar su casilla original).</li>
+                <li>La torre con la que se enrocar&aacute; no debi&oacute; ser movida en una jugada anterior.</li>
+                <li>No deben haber piezas en medio, ni adversarias, ni del mismo bando.</li>
+                <li>Las casillas por las que pase el rey no deben estar atacadas por piezas enemigas.</li>
+                <li>El rey no puede estar en jaque.</li>
+                <li>El rey no puede colocarse en jaque una vez realizado el enroque.</li>
+            </ul>
+            
+            <center><img src="img/enroque.gif" alt="Enroque" border="1" width="706" height="323"></center>
+
+            <h2>Coronaci&oacute;n del pe&oacute;n</h2>
+            <p><font size="5">D</font>espu&eacute;s de m&uacute;ltiples avances de un pe&oacute;n, si este logra llegar a la &uacute;ltima fila,
+            se dice que se corona, pues, puede transformarse en una dama, o en un alfil, o en un caballo.
+            No se puede transformar en rey, ni en pe&oacute;n.</p>
+            <center><img src="img/coronacion.gif" alt="Coronaci&oacute;n" border="1" width="706" height="323"></center>
+
+            <h2>Pe&oacute;n al paso</h2>
+            <p><font size="5">S</font>i en una columna vecina el pe&oacute;n enemigo avanza dos casillas, seg&uacute;n tiene derecho en su primera movida, y
+            un pe&oacute;n est&aacute; avanzado de modo que ataca la casilla intermedia, tenemos derecho de capturar ese pe&oacute;n "al paso".</p>
+            <center>
+                <img src="img/alpaso.gif" alt="Pe&oacute;n al paso" border="1" width="101" height="324">
+                <img src="img/flechader.gif" width="52" height="45" border="1">
+                <img src="img/alpaso1.gif" alt="Pe&oacute;n al paso 1" border="1" width="83" height="324">
+                <img src="img/flechader.gif" width="52" height="45" border="1">
+                <img src="img/alpaso2.gif" alt="Pe&oacute;n al paso 2" border="1" width="101" height="324">
+            </center>
+            <p>El pe&oacute;n es la &uacute;nica pieza que puede tomar al paso.</p>
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container"><br>
+            &copy; 2025 - ChessTutor - Desarrollado por Davis Penaranda Zarate - v2.0.0
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-4.0.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/1.4.0/chess.js"></script>
+    <script src="js/chessboard-1.0.0.js"></script>
+    <script src="js/site.js"></script>
+</body>
+</html>

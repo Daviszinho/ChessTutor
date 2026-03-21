@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Las piezas del ajedrez - ChessTutor</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css">
+    <link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="index.html">ChessTutor</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between" id="navbarNav">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item"><a class="nav-link text-dark" href="index.html">Inicio</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="inicio.html">Piezas</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="movimiento.html">Movimiento</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="capturar.html">Capturar</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="extraordinarios.html">Extraordinarios</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="ritmo.html">Ritmo</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="nomeclatura.html">Nomenclatura</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="aperturas.html">Aperturas</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="ejercicios.html">Chess Enigma</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="historia.html">Historia</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="jugar.html">Jugar contra IA</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    
+    <div class="container">
+        <main role="main" class="pb-3">
+            <div class="text-center">
+                <h2>En el principio...</h2>
+                <p><font size="5">E</font>l ajedrez ocupa seis piezas, cada una de ellas seg&uacute;n
+                las reglas se mueve de una manera particular. Cada uno de los bandos (negras
+                y blancas) posee la siguiente cantidad de piezas al inicio de una partida:</p>
+                
+                <table class="table table-bordered" style="max-width: 500px; margin: 0 auto;">
+                    <tr>
+                        <th><center>Pieza</center></th>
+                        <th><center>Cantidad</center></th>
+                        <th><center>S&iacute;mbolo</center></th>
+                    </tr>
+                    <tr>
+                        <td><center><i>Rey</i></center></td>
+                        <td><center>1</center></td>
+                        <td>
+                            <center>
+                                <img src="js/img/chesspieces/wikipedia/wK.png" alt="Rey blanco" border="1" width="40" height="40">
+                                <img src="js/img/chesspieces/wikipedia/bK.png" alt="Rey negro" border="1" width="40" height="40">
+                            </center>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><center><i>Dama</i></center></td>
+                        <td><center>1</center></td>
+                        <td>
+                            <center>
+                                <img src="js/img/chesspieces/wikipedia/wQ.png" alt="Dama blanca" border="1" width="40" height="40">
+                                <img src="js/img/chesspieces/wikipedia/bQ.png" alt="Dama negra" border="1" width="40" height="40">
+                            </center>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><center><i>Torre</i></center></td>
+                        <td><center>2</center></td>
+                        <td>
+                            <center>
+                                <img src="js/img/chesspieces/wikipedia/wR.png" alt="Torre blanca" border="1" width="40" height="40">
+                                <img src="js/img/chesspieces/wikipedia/bR.png" alt="Torre negra" border="1" width="40" height="40">
+                            </center>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><center><i>Alfil</i></center></td>
+                        <td><center>2</center></td>
+                        <td>
+                            <center>
+                                <img src="js/img/chesspieces/wikipedia/wB.png" alt="Alfil blanco" border="1" width="40" height="40">
+                                <img src="js/img/chesspieces/wikipedia/bB.png" alt="Alfil negro" border="1" width="40" height="40">
+                            </center>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><center><i>Caballo</i></center></td>
+                        <td><center>2</center></td>
+                        <td>
+                            <center>
+                                <img src="js/img/chesspieces/wikipedia/wN.png" alt="Caballo blanco" border="1" width="40" height="40">
+                                <img src="js/img/chesspieces/wikipedia/bN.png" alt="Caballo negro" border="1" width="40" height="40">
+                            </center>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><center><i>Pe&oacute;n</i></center></td>
+                        <td><center>8</center></td>
+                        <td>
+                            <center>
+                                <img src="js/img/chesspieces/wikipedia/wP.png" alt="Pe&oacute;n blanco" border="1" width="40" height="40">
+                                <img src="js/img/chesspieces/wikipedia/bP.png" alt="Pe&oacute;n negro" border="1" width="40" height="40">
+                            </center>
+                        </td>
+                    </tr>
+                </table>
+                
+                <p>* Es decir sobre un tablero se encuentran 32 piezas, 16 para cada bando.</p>
+                
+                <p>Las piezas al inicio de una partida deben colocarse de la siguiente manera:</p>
+                <center>
+                    <div id='ejemplo1' style='width: 400px'></div>
+                </center>
+                
+                <p><strong>Nota importante:</strong> Es importante aclarar que las piezas negras est&aacute;n colocadas
+                arriba y las blancas abajo. Adem&aacute;s, el tablero se coloca de tal manera que hay una casilla blanca en la esquina inferior derecha.</p>
+                <p>Suele confundirse las posiciones entre el rey y la reina. Se soluciona con la siguiente regla:
+                "Reina blanca en casilla blanca, reina negra en casilla negra, las damas mandan."</p>
+            </div>
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container"><br>
+            &copy; 2025 - ChessTutor - Desarrollado por Davis Penaranda Zarate - v2.0.0
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-4.0.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/1.4.0/chess.js"></script>
+    <script src="js/chessboard-1.0.0.js"></script>
+    <script src="js/site.js"></script>
+</body>
+</html>

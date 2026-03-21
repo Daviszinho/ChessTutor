@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ritmo de la partida - ChessTutor</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="index.html">ChessTutor</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between" id="navbarNav">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item"><a class="nav-link text-dark" href="index.html">Inicio</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="inicio.html">Piezas</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="movimiento.html">Movimiento</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="capturar.html">Capturar</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="extraordinarios.html">Extraordinarios</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="ritmo.html">Ritmo</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="nomeclatura.html">Nomeclatura</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="aperturas.html">Aperturas</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="ejercicios.html">Chess Enigma</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="historia.html">Historia</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="jugar.html">Jugar contra IA</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    
+    <div class="container">
+        <main role="main" class="pb-3">
+            <h1>Ritmo de la partida</h1>
+
+            <p><font size="5">C</font>ada jugador realiza una jugada a la vez. Siempre inicia el bando de las blancas, luego,
+            contestan las negras, y as&iacute; sucesivamente hasta finalizar la partida.</p>
+
+            <h2>Jaque</h2>
+            <p><font size="5">E</font>l rey durante el transcurso de la partida nunca debe ser capturado, ni atacado. La acci&oacute;n de poner una
+            pieza que ataque el rey se denomina jaque. Si alguno de los jugadores ataca el rey adversario debe announce
+            "jaque!".</p>
+            <p>Existen tres v&iacute;as de rehuir de un jaque:</p>
+            <ol>
+                <li>Moviendo el rey, de tal manera que huya del ataque.</li>
+                <li>Interponiendo una pieza entre el rey y el atacante.</li>
+                <li>Capturando la pieza que agrede al rey.</li>
+            </ol>
+            <center><img border="1" src="img/jaque.gif" alt="Jaque" width="323" height="323"></center>
+
+            <h2>Mate</h2>
+            <p><font size="5">E</font>l Mate es un caso especial de jaque, pues, en un mate el rey se encuentra atacado con la diferencia que
+            no existe posibilidad alguna de escapar del jaque.</p>
+            <center><img border="1" src="img/mate.gif" alt="Mate" width="323" height="323"></center>
+
+            <h2>Tablas (empate)</h2>
+            <p><font size="5">C</font>uando el rey no tiene posibilidades de moverse y no est&aacute; atacado, se dice que el rey est&aacute; ahogado y la
+            partida se establece empatada o en tablas.</p>
+            <center><img border="1" src="img/ahogado.gif" alt="Tablas" width="323" height="323"></center>
+            <p>Dos reyes nunca pueden estar juntos.</p>
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container"><br>
+            &copy; 2025 - ChessTutor - Desarrollado por Davis Penaranda Zarate - v2.0.0
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-4.0.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
