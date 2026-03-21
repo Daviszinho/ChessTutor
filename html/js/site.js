@@ -1,5 +1,7 @@
-var board = null;
-var game = new Chess();
+$(document).ready(function() {
+    var currentYear = new Date().getFullYear();
+    $('.footer-year').text(currentYear);
+});
 
 function isValidKingMove(source, target) {
     var fileDiff = Math.abs(source.charCodeAt(0) - target.charCodeAt(0));
