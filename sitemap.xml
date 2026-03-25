@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+    <url>
+        <loc>https://chesstutor.example.com/</loc>
+        <xhtml:link rel="alternate" hreflang="es" href="https://chesstutor.example.com/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://chesstutor.example.com/en/"/>
+        <xhtml:link rel="alternate" hreflang="pt" href="https://chesstutor.example.com/pt/"/>
+        <lastmod>2025-01-01</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1.0</priority>
+    </url>
+    <url>
+        <loc>https://chesstutor.example.com/en/</loc>
+        <xhtml:link rel="alternate" hreflang="es" href="https://chesstutor.example.com/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://chesstutor.example.com/en/"/>
+        <xhtml:link rel="alternate" hreflang="pt" href="https://chesstutor.example.com/pt/"/>
+        <lastmod>2025-01-01</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1.0</priority>
+    </url>
+    <url>
+        <loc>https://chesstutor.example.com/pt/</loc>
+        <xhtml:link rel="alternate" hreflang="es" href="https://chesstutor.example.com/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://chesstutor.example.com/en/"/>
+        <xhtml:link rel="alternate" hreflang="pt" href="https://chesstutor.example.com/pt/"/>
+        <lastmod>2025-01-01</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1.0</priority>
+    </url>
+    <url>
+        <loc>https://chesstutor.example.com/inicio.html</loc>
+        <lastmod>2025-01-01</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://chesstutor.example.com/movimiento.html</loc>
+        <lastmod>2025-01-01</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://chesstutor.example.com/capturar.html</loc>
+        <lastmod>2025-01-01</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://chesstutor.example.com/extraordinarios.html</loc>
+        <lastmod>2025-01-01</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://chesstutor.example.com/ritmo.html</loc>
+        <lastmod>2025-01-01</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://chesstutor.example.com/nomenclatura.html</loc>
+        <lastmod>2025-01-01</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://chesstutor.example.com/estrategia.html</loc>
+        <lastmod>2025-01-01</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://chesstutor.example.com/ejercicios.html</loc>
+        <lastmod>2025-01-01</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://chesstutor.example.com/ecoviewer.html</loc>
+        <lastmod>2025-01-01</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://chesstutor.example.com/jugar.html</loc>
+        <lastmod>2025-01-01</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://chesstutor.example.com/historia.html</loc>
+        <lastmod>2025-01-01</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://chesstutor.example.com/aperturas.html</loc>
+        <lastmod>2025-01-01</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://chesstutor.example.com/plantilla.html</loc>
+        <lastmod>2025-01-01</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.3</priority>
+    </url>
+</urlset>

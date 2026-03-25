@@ -1,0 +1,20 @@
+# Robots.txt para ChessTutor
+# https://chesstutor.example.com/
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://chesstutor.example.com/sitemap.xml
+
+# Archivos bloqueados (opcional)
+Disallow: /img/
+Disallow: /js/
+Disallow: /css/
+Disallow: /.git/
+
+# Archivos de recursos no necesarios para indexación
+Disallow: /*.js$
+Disallow: /*.css$
+Disallow: /*.gif$
+Disallow: /*.jpg$
